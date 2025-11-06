@@ -1,6 +1,6 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
-/* ===== RESET & BASE STYLES ===== */
+/* BASE STYLES */
 * {
     margin: 0;
     padding: 0;
@@ -20,7 +20,7 @@ body {
     padding: 0 20px;
 }
 
-/* ===== HEADER & NAVIGATION ===== */
+/* HEADER & NAVIGATION */
 .header {
     background: rgba(0, 0, 0, 0.95);
     padding: 15px 0;
@@ -61,10 +61,10 @@ body {
     transition: all 0.3s ease;
 }
 
-    .nav-link:hover {
-        color: #ff0000;
-        background: rgba(255, 0, 0, 0.1);
-    }
+.nav-link:hover {
+    color: #ff0000;
+    background: rgba(255, 0, 0, 0.1);
+}
 
 /* Mobile Navigation */
 .mobile-nav {
@@ -82,25 +82,25 @@ body {
     animation: slideDown 0.3s ease;
 }
 
-    .mobile-nav.active {
-        display: flex;
-    }
+.mobile-nav.active {
+    display: flex;
+}
 
-    .mobile-nav .nav-link {
-        padding: 15px 20px;
-        border-bottom: 1px solid #333;
-        text-align: center;
-        font-size: 1.1rem;
-    }
+.mobile-nav .nav-link {
+    padding: 15px 20px;
+    border-bottom: 1px solid #333;
+    text-align: center;
+    font-size: 1.1rem;
+}
 
-        .mobile-nav .nav-link:last-child {
-            border-bottom: none;
-        }
+.mobile-nav .nav-link:last-child {
+    border-bottom: none;
+}
 
-        .mobile-nav .nav-link:hover {
-            background: rgba(255, 0, 0, 0.2);
-            color: #ff0000;
-        }
+.mobile-nav .nav-link:hover {
+    background: rgba(255, 0, 0, 0.2);
+    color: #ff0000;
+}
 
 /* Hamburger Menu */
 .hamburger {
@@ -116,34 +116,32 @@ body {
     z-index: 1001;
 }
 
-    .hamburger span {
-        display: block;
-        height: 3px;
-        width: 100%;
-        background: #fff;
-        border-radius: 3px;
-        transition: all 0.3s ease;
-        transform-origin: center;
-    }
+.hamburger span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background: #fff;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
 
-    .hamburger.active span:nth-child(1) {
-        transform: rotate(45deg) translate(6px, 6px);
-    }
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
 
-    .hamburger.active span:nth-child(2) {
-        opacity: 0;
-    }
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
 
-    .hamburger.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(6px, -6px);
-    }
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
 
-/* ===== HERO SECTION ===== */
+/* HERO SECTION */
 .hero {
     background:
-    /* Темный градиент поверх картинки */
     linear-gradient(135deg, rgba(10, 10, 10, 0.85) 0%, rgba(0, 0, 0, 0.9) 100%),
-    /* Лос-Сантос ночью */
     url('../images/night-los-santos.png') center/cover no-repeat;
     min-height: 100vh;
     display: flex;
@@ -187,7 +185,7 @@ body {
     min-width: 200px;
 }
 
-/* ===== BUTTONS ===== */
+/* BUTTONS */
 .btn {
     padding: 18px 35px;
     border: none;
@@ -207,11 +205,11 @@ body {
     color: #fff;
 }
 
-    .btn-primary:hover {
-        background: #cc0000;
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(255, 0, 0, 0.4);
-    }
+.btn-primary:hover {
+    background: #cc0000;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 0, 0, 0.4);
+}
 
 .btn-secondary {
     background: transparent;
@@ -219,18 +217,16 @@ body {
     border: 2px solid #ff0000;
 }
 
-    .btn-secondary:hover {
-        background: #ff0000;
-        transform: translateY(-3px);
-    }
+.btn-secondary:hover {
+    background: #ff0000;
+    transform: translateY(-3px);
+}
 
-/* ===== ABOUT RPG SECTION ===== */
+/* ABOUT RPG SECTION */
 .about-rpg {
     padding: 80px 0;
     background:
-    /* Темный градиент поверх картинки */
     linear-gradient(135deg, rgba(10, 10, 10, 0.85) 0%, rgba(0, 0, 0, 0.9) 100%),
-    /* Лос-Сантос ночью */
     url('../images/about.jpg') center/cover no-repeat;
 }
 
@@ -281,12 +277,10 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
-/* ===== SOCIAL SECTION ===== */
+/* SOCIAL SECTION */
 .social-section {
     background:
-    /* Темный градиент поверх картинки */
     linear-gradient(135deg, rgba(10, 10, 10, 0.85) 0%, rgba(0, 0, 0, 0.9) 100%),
-    /* Лос-Сантос ночью */
     url('../images/social.webp') center/cover no-repeat;
     padding: 80px 0;
     border-top: 2px solid #ff0000;
@@ -419,12 +413,10 @@ body {
     text-align: center;
 }
 
-/* ===== REGISTRATION FORM ===== */
+/* REGISTRATION FORM */
 .register-section {
     background:
-    /* Темный градиент поверх картинки */
     linear-gradient(135deg, rgba(10, 10, 10, 0.85) 0%, rgba(0, 0, 0, 0.9) 100%),
-    /* Лос-Сантос ночью */
     url('../images/registration.png') center/cover no-repeat;
     min-height: 100vh;
     padding: 120px 0 80px;
@@ -474,13 +466,11 @@ body {
     border-color: #ff0000;
 }
 
-/* ===== INSTRUCTIONS SECTION ===== */
+/* INSTRUCTIONS SECTION */
 .instructions-section {
     padding: 120px 0 80px;
     background:
-    /* Темный градиент поверх картинки */
     linear-gradient(135deg, rgba(10, 10, 10, 0.85) 0%, rgba(0, 0, 0, 0.9) 100%),
-    /* Лос-Сантос ночью */
     url('../images/instruction.jpg') center/cover no-repeat;
     min-height: 100vh;
 }
@@ -534,11 +524,11 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
-    .step-content a:hover {
-        text-decoration: underline;
-    }
+.step-content a:hover {
+    text-decoration: underline;
+}
 
-/* ===== FOOTER ===== */
+/* FOOTER */
 .footer {
     background: #000;
     padding: 30px 0;
@@ -546,11 +536,11 @@ body {
     border-top: 2px solid #ff0000;
 }
 
-    .footer p {
-        font-family: 'Roboto', sans-serif;
-    }
+.footer p {
+    font-family: 'Roboto', sans-serif;
+}
 
-/* ===== ANIMATIONS ===== */
+/* ANIMATIONS */
 @keyframes slideDown {
     from {
         opacity: 0;
@@ -563,7 +553,7 @@ body {
     }
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
+/* RESPONSIVE DESIGN */
 
 /* Tablets and Mobile (768px and below) */
 @media (max-width: 768px) {
@@ -748,7 +738,7 @@ body {
     }
 }
 
-/* ===== UTILITY CLASSES ===== */
+/* UTILITY CLASSES */
 .text-center {
     text-align: center;
 }

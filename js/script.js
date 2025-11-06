@@ -1,17 +1,15 @@
-﻿// Мобильное меню
-document.addEventListener('DOMContentLoaded', function () {
+﻿document.addEventListener('DOMContentLoaded', function () {
+    // Мобильное меню
     const hamburger = document.getElementById('hamburger');
     const mobileNav = document.getElementById('mobileNav');
     const body = document.body;
 
     if (hamburger && mobileNav) {
         hamburger.addEventListener('click', function (e) {
-            e.stopPropagation(); // Останавливаем всплытие события
-            // Переключаем активное состояние
+            e.stopPropagation();
             hamburger.classList.toggle('active');
             mobileNav.classList.toggle('active');
 
-            // Блокируем прокрутку body когда меню открыто
             if (mobileNav.classList.contains('active')) {
                 body.style.overflow = 'hidden';
             } else {
@@ -19,7 +17,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Закрываем меню при клике на ссылку
         const mobileLinks = mobileNav.querySelectorAll('.nav-link');
         mobileLinks.forEach(link => {
             link.addEventListener('click', function () {
@@ -29,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-        // Закрываем меню при клике вне области
         document.addEventListener('click', function (event) {
             const isClickInsideHeader = event.target.closest('.header');
             const isClickOnHamburger = event.target.closest('.hamburger');
@@ -41,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Закрываем меню при изменении размера окна
         window.addEventListener('resize', function () {
             if (window.innerWidth > 768) {
                 hamburger.classList.remove('active');

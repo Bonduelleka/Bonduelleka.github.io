@@ -3,28 +3,28 @@
   "WorkspaceRootPath": "H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\js\\script.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:js\\script.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\register.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:register.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\css\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:css\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\instructions.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:instructions.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\instructions.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:instructions.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\register.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:register.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\css\\logo.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:css\\logo.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\js\\script.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:js\\script.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,43 +34,43 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "index.html",
               "DocumentMoniker": "H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\index.html",
               "RelativeDocumentMoniker": "index.html",
               "ToolTip": "H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\index.html",
               "RelativeToolTip": "index.html",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFsAAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIAAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
               "WhenOpened": "2025-11-06T13:03:11.256Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "instructions.html",
               "DocumentMoniker": "H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\instructions.html",
               "RelativeDocumentMoniker": "instructions.html",
               "ToolTip": "H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\instructions.html",
               "RelativeToolTip": "instructions.html",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAlAAAAAAAAAA==",
+              "ViewState": "AgIAAEIAAAAAAAAAAAAAAFUAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
               "WhenOpened": "2025-11-06T13:03:28.835Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "register.html",
               "DocumentMoniker": "H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\register.html",
               "RelativeDocumentMoniker": "register.html",
               "ToolTip": "H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\register.html",
               "RelativeToolTip": "register.html",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAA6AAAAAAAAAA==",
+              "ViewState": "AgIAAD8AAAAAAAAAAADwv1AAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
               "WhenOpened": "2025-11-06T13:03:28.165Z",
               "EditorCaption": ""
@@ -79,11 +79,11 @@
         },
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "logo.css",
               "DocumentMoniker": "H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\css\\logo.css",
               "RelativeDocumentMoniker": "css\\logo.css",
@@ -91,30 +91,31 @@
               "RelativeToolTip": "css\\logo.css",
               "ViewState": "AgIAAAsAAAAAAAAAAADwvzQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-11-06T13:24:18.537Z"
+              "WhenOpened": "2025-11-06T13:24:18.537Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "style.css",
               "DocumentMoniker": "H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\css\\style.css",
               "RelativeDocumentMoniker": "css\\style.css",
               "ToolTip": "H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\css\\style.css",
               "RelativeToolTip": "css\\style.css",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAOQCAAASAAAAAAAAAA==",
+              "ViewState": "AgIAAMsBAAAAAAAAAAAAAOMBAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
               "WhenOpened": "2025-11-06T13:06:32.224Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
               "Title": "script.js",
               "DocumentMoniker": "H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\js\\script.js",
               "RelativeDocumentMoniker": "js\\script.js",
               "ToolTip": "H:\\5 \u0441\u0435\u043C\\\u0412\u0435\u0440\u0441\u0442\u043A\u0430 \u0438 \u043F\u0440\u043E\u0442\u043E\u0442\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0441\u0430\u0439\u0442\u043E\u0432\\final\\js\\script.js",
               "RelativeToolTip": "js\\script.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAgAAAAAAAAAA==",
+              "ViewState": "AgIAACwAAAAAAAAAAAAiwEcAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2025-11-06T13:17:07.763Z",
               "EditorCaption": ""
