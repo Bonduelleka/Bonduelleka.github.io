@@ -1,9 +1,5 @@
-﻿// Инициализация логотипа
+﻿// Мобильное меню
 document.addEventListener('DOMContentLoaded', function () {
-    // Логотип уже создан через CSS
-
-
-
     const hamburger = document.getElementById('hamburger');
     const mobileNav = document.getElementById('mobileNav');
     const body = document.body;
@@ -55,7 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-
     // Обработка формы регистрации
     const registrationForm = document.getElementById('registrationForm');
     if (registrationForm) {
@@ -75,14 +70,4 @@ document.addEventListener('DOMContentLoaded', function () {
             window.location.href = 'instructions.html';
         });
     }
-
-    // Переключение языка
-    const langButtons = document.querySelectorAll('.lang-btn');
-    langButtons.forEach(btn => {
-        btn.addEventListener('click', function () {
-            langButtons.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            // Здесь будет логика смены языка
-        });
-    });
 });
