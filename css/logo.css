@@ -1,0 +1,49 @@
+﻿/* Логотип AmnesiaRPG */
+.logo {
+    width: 60px;
+    height: 60px;
+    position: relative;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(255, 0, 0, 0.3);
+}
+
+    .logo::before {
+        content: "A";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 32px;
+        font-weight: bold;
+        color: #ff0000;
+        font-family: Arial, sans-serif;
+        text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    }
+
+    .logo::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 2px solid #ff0000;
+        border-radius: 8px;
+        animation: pulse 2s infinite;
+    }
+
+@keyframes pulse {
+    0% {
+        border-color: #ff0000;
+    }
+
+    50% {
+        border-color: #ff4444;
+    }
+
+    100% {
+        border-color: #ff0000;
+    }
+}
