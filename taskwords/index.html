@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Sorter - Вариант 3</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../css/logo.css">
+</head>
+<body>
+    <a href="../index.html" class="logo-link">
+        <div class="logo" id="logo"></div>
+    </a>
+    <div class="container">
+        <h1>Разбор слов - Вариант 3</h1>
+
+        <div class="block" id="block3">
+            <!-- Нажатый элемент -->
+        </div>
+
+        <div class="main-content">
+            <div class="left-column">
+                <div class="block" id="block2">
+                    <!-- Отсортированные элементы -->
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="input-section">
+                    <input type="text" id="inputString" placeholder="Введите слова через тире, например: лес-бочка-бык-крик-3-Бох">
+                    <button id="parseButton">Разобрать</button>
+                </div>
+
+                <div class="block" id="block1">
+                    <!-- Перетащенные элементы -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
