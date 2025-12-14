@@ -1,0 +1,130 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Разрежь на части - Игра</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/game.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Гарантируем, что body тоже занимает весь экран */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="container game-container">
+        <!-- Верхняя плашка -->
+        <div class="game-header">
+            <a href="index.html" class="logo" id="backToMenu">
+                <span class="scissors-icon">✂️</span>
+            </a>
+
+            <div class="timer-container">
+                <div class="timer" id="gameTimer"></div>
+                <div class="level-indicator" id="currentLevel">Уровень 1</div>
+            </div>
+
+            <div class="game-controls">
+                <button id="restartLevel" class="btn-control" title="Начать уровень заново">
+                    <span class="btn-icon">🔄</span>
+                    <span class="btn-text">Сбросить</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Игровое поле -->
+        <div class="game-main">
+            <!-- Левая часть -->
+            <div class="game-sidebar left-sidebar">
+                <div class="game-mode-info">
+                    <h2>Режим: <span class="mode-title">Разрежь на части</span></h2>
+                    <div class="mode-description">
+                        <p>Цель: путём деления фигуры заданным количеством разрезов получить требуемое количество частей.</p>
+                        <p>Управление: зажмите ЛКМ и проведите линию через фигуру для разреза.</p>
+                        <p>Каждый пройденный уровень даёт +30 секунд времени.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- канвас -->
+            <div class="game-center">
+                <canvas id="gameCanvas" width="800" height="600"></canvas>
+            </div>
+
+            <!-- Правая часть -->
+            <div class="game-sidebar right-sidebar">
+                <div class="game-task">
+                    <h2>Задание</h2>
+                    <div class="task-content">
+                        <div class="task-counter">
+                            <div class="counter-item">
+                                <span class="counter-label">Части:</span>
+                                <span class="counter-value" id="partsCounter">0/0</span>
+                            </div>
+                            <div class="counter-item">
+                                <span class="counter-label">Разрезы:</span>
+                                <span class="counter-value" id="cutsCounter">0/0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Оверлей для завершения игры -->
+        <div id="gameOverlay" class="overlay">
+            <div class="overlay-content">
+                <h2 id="gameResultTitle">Игра завершена!</h2>
+                <div class="result-stats">
+                    <p>Ваш результат:</p>
+                    <div class="final-score" id="finalScore">0</div>
+                    <p>Пройдено уровней: <span id="finalLevels">0</span></p>
+                    <p>Общее время: <span id="finalTime">00:00</span></p>
+                </div>
+                <div class="overlay-buttons">
+                    <button id="playAgain" class="btn-overlay">Играть снова</button>
+                    <button id="backToMenuBtn" class="btn-overlay btn-secondary">В главное меню</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/cutting-system.js"></script>
+    <script src="js/flag-system.js"></script>
+    <script src="js/shape-generator.js"></script>
+    <script src="js/rating-system.js"></script>
+    <script src="js/modes/base-mode.js"></script>
+    <script src="js/modes/cut-mode.js"></script>
+    <script src="js/modes/friend-foe-mode.js"></script>
+    <script src="js/ui-manager.js"></script>
+    <script src="js/game-manager.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Проверяем никнейм
+            const nickname = localStorage.getItem('game_nickname');
+            const gameMode = localStorage.getItem('game_mode');
+
+            if (!nickname || !gameMode) {
+                alert('Пожалуйста, начните игру из главного меню');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Инициализируем UI
+            window.uiManager = new UIManager();
+
+            // Инициализируем менеджер игры
+            window.gameManager = new GameManager();
+
+            // Запускаем выбранный режим
+            window.gameManager.startGame(gameMode);
+        });
+    </script>
+</body>
+</html>
