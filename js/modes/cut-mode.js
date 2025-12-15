@@ -45,8 +45,24 @@ class CutMode extends GameMode {
         this.generateLevelParameters();
         
         // Генерация фигуры
-        const shape = this.shapeGenerator.generateRandomShape(this.gameState.level);
+        const shape = this.shapeGenerator.generateRandomShape(3);
         this.cuttingSystem.setShapes([shape]);
+
+        // Показываем начальные плашки
+        if (window.uiManager) {
+            window.uiManager.updateTaskPlates({
+                parts: {
+                    label: 'Части:',
+                    value: `${this.gameState.currentPieces}/${this.gameState.targetPieces}`,
+                    type: 'parts'
+                },
+                cuts: {
+                    label: 'Разрезы:',
+                    value: `${this.gameState.cutsMade}/${this.gameState.maxCuts}`,
+                    type: 'cuts'
+                }
+            });
+        }
     }
 
     generateLevelParameters() {
@@ -54,26 +70,29 @@ class CutMode extends GameMode {
         this.gameState.maxCuts = Math.max(2, 5 - Math.floor(this.gameState.level / 2));
     }
 
-    onCutMade(cutsMade, newShapeCount) {
+    onCutMade(newShapeCount) {
         this.gameState.cutsMade++;
         this.gameState.currentPieces = newShapeCount;
-        
+
         // Проверка завершения уровня
         if (this.gameState.currentPieces >= this.gameState.targetPieces) {
             this.completeLevel();
         } else if (this.gameState.cutsMade >= this.gameState.maxCuts) {
             this.failLevel();
         }
-        
-        // Обновляем UI через глобальный UI менеджер
-        if (window.uiManager) {
-            window.uiManager.updateTask(
-                this.gameState.currentPieces,
-                this.gameState.targetPieces,
-                this.gameState.cutsMade,
-                this.gameState.maxCuts
-            );
-        }
+
+        window.uiManager.updateTaskPlates({
+            parts: {
+                label: 'Части:',
+                value: `${this.gameState.currentPieces}/${this.gameState.targetPieces}`,
+                type: 'cuts'
+            },
+            cuts: {
+                label: 'Разрезы:',
+                value: `${this.gameState.cutsMade}/${this.gameState.maxCuts}`,
+                type: 'cuts'
+            }
+        });
     }
 
     completeLevel() {

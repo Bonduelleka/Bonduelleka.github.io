@@ -1,0 +1,331 @@
+/* ===== ГЛАВНОЕ МЕНЮ ===== */
+.main-menu {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Логотип в левом верхнем углу */
+.menu-logo {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    z-index: 100;
+}
+
+.logo-text {
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Центральный контент */
+.menu-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.menu-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 1200px;
+    min-height: 600px;
+    display: flex;
+    overflow: hidden;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Левая часть меню */
+.menu-left {
+    flex: 1;
+    padding: 50px;
+    border-right: 2px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+}
+
+.game-title {
+    font-size: 42px;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Режимы игры */
+.mode-selection h2 {
+    font-size: 24px;
+    color: #4a5568;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+.mode-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+}
+
+.mode-btn {
+    text-align: left;
+    padding: 25px;
+    background: #f8f9fa;
+    border: 3px solid #e9ecef;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.mode-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    border-color: #667eea;
+    background: white;
+}
+
+.mode-btn.active {
+    border-color: #667eea;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+}
+
+.mode-icon {
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+
+.mode-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.mode-desc {
+    font-size: 14px;
+    color: #718096;
+    line-height: 1.5;
+}
+
+/* Правая часть меню */
+.menu-right {
+    flex: 1;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.player-section {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 30px;
+}
+
+.player-section h2 {
+    font-size: 24px;
+    color: #4a5568;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.nickname-input {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.btn-save {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0 25px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* Кнопка начала игры */
+.btn-start {
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    color: white;
+    padding: 20px 50px;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 15px;
+    width: 100%;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-start:hover:not(:disabled) {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(72, 187, 120, 0.3);
+}
+
+.selected-mode {
+    display: block;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+/* Рейтинг */
+.rating-section {
+    flex: 1;
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.rating-section h2 {
+    font-size: 24px;
+    color: #4a5568;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+#ratingMode {
+    font-size: 16px;
+    font-weight: 400;
+    color: #718096;
+}
+
+.rating-table {
+    flex: 1;
+    overflow-y: auto;
+    border-radius: 10px;
+    background: white;
+    border: 2px solid #e2e8f0;
+}
+
+.rating-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.rating-table thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    position: sticky;
+    top: 0;
+}
+
+.rating-table th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.rating-table td {
+    padding: 15px;
+    color: #4a5568;
+}
+
+.rating-table tbody tr {
+    border-bottom: 1px solid #e2e8f0;
+    transition: background-color 0.2s;
+}
+
+.rating-table tbody tr:hover {
+    background: #f7fafc;
+}
+
+.rating-table td:first-child {
+    font-weight: 700;
+    color: #2d3748;
+    width: 80px;
+}
+
+.rating-table td:last-child {
+    font-weight: 600;
+    color: #2d3748;
+    text-align: right;
+}
+
+/* Футер */
+.footer {
+    text-align: center;
+    padding: 20px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    margin-top: auto;
+}
+
+/* ===== АДАПТИВНОСТЬ МЕНЮ ===== */
+@media (max-width: 1024px) {
+    .menu-card {
+        flex-direction: column;
+        max-width: 600px;
+    }
+
+    .menu-left {
+        border-right: none;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .menu-logo {
+        position: relative;
+        top: auto;
+        left: auto;
+        margin: 20px auto;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-left, .menu-right {
+        padding: 30px;
+    }
+
+    .game-title {
+        font-size: 32px;
+        margin-bottom: 30px;
+    }
+
+    .mode-btn {
+        padding: 20px;
+    }
+
+    .nickname-input {
+        flex-direction: column;
+    }
+
+    .btn-save {
+        padding: 15px;
+    }
+}

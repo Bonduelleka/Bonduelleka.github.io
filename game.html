@@ -2,11 +2,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Разрежь на части - Игра</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/game.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Гарантируем, что body тоже занимает весь экран */
         html, body {
             margin: 0;
             padding: 0;
@@ -49,6 +48,21 @@
                         <p>Каждый пройденный уровень даёт +30 секунд времени.</p>
                     </div>
                 </div>
+                <div class="keyboard-hints">
+                    <h3>Управление</h3>
+                    <div class="key-hint">
+                        <span class="key">R</span>
+                        <span class="hint-text">- Перезапустить уровень</span>
+                    </div>
+                    <div class="key-hint">
+                        <span class="key">M</span>
+                        <span class="hint-text">- Вкл/Выкл звук</span>
+                    </div>
+                    <div class="key-hint">
+                        <span class="key">ESC</span>
+                        <span class="hint-text">- В главное меню</span>
+                    </div>
+                </div>
             </div>
 
             <!-- канвас -->
@@ -60,17 +74,8 @@
             <div class="game-sidebar right-sidebar">
                 <div class="game-task">
                     <h2>Задание</h2>
-                    <div class="task-content">
-                        <div class="task-counter">
-                            <div class="counter-item">
-                                <span class="counter-label">Части:</span>
-                                <span class="counter-value" id="partsCounter">0/0</span>
-                            </div>
-                            <div class="counter-item">
-                                <span class="counter-label">Разрезы:</span>
-                                <span class="counter-value" id="cutsCounter">0/0</span>
-                            </div>
-                        </div>
+                    <div class="task-content" id="taskContainer">
+
                     </div>
                 </div>
             </div>
@@ -103,6 +108,7 @@
     <script src="js/modes/friend-foe-mode.js"></script>
     <script src="js/ui-manager.js"></script>
     <script src="js/game-manager.js"></script>
+    <script src="js/audio-manager.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -127,4 +133,3 @@
         });
     </script>
 </body>
-</html>

@@ -3,14 +3,15 @@ class UIManager {
         this.elements = {
             timer: document.getElementById('gameTimer'),
             level: document.getElementById('currentLevel'),
-            partsCounter: document.getElementById('partsCounter'),
-            cutsCounter: document.getElementById('cutsCounter'),
             overlay: document.getElementById('gameOverlay'),
             resultTitle: document.getElementById('gameResultTitle'),
             finalScore: document.getElementById('finalScore'),
             finalLevels: document.getElementById('finalLevels'),
-            finalTime: document.getElementById('finalTime')
+            finalTime: document.getElementById('finalTime'),
+            taskContainer: document.getElementById('taskContainer')
         };
+
+        this.taskPlates = new Map();
 
         this.bindEvents();
     }
@@ -45,7 +46,7 @@ class UIManager {
 
         if (playAgainBtn) {
             playAgainBtn.addEventListener('click', () => {
-                // Перезапускаем игру
+                if (window.audioManager) window.audioManager.play('click');
                 location.reload();
             });
         }
@@ -73,12 +74,65 @@ class UIManager {
         }
     }
 
-    updateTask(currentParts, targetParts, currentCuts, maxCuts) {
-        if (this.elements.partsCounter) {
-            this.elements.partsCounter.textContent = `${currentParts}/${targetParts}`;
+     /**
+         * Обновляем или добавляем плашку с задачей
+         * @param {string} plateId - "parts", "cuts", "conflicts"
+         * @param {Object} plateData - Данные плашки
+         * @param {string} plateData.label - Текст слева
+         * @param {string} plateData.value - Текст справа
+         * @param {string} plateData.type - Тип плашки для стилизации ("parts", "cuts")
+     */
+    updateTaskPlate(plateId, plateData) {
+        if (!this.elements.taskContainer) return;
+
+        let plateElement = this.taskPlates.get(plateId);
+
+        if (!plateElement) {
+            // Создаём новую плашку
+            plateElement = document.createElement('div');
+            plateElement.className = 'task-plate';
+            plateElement.dataset.type = plateData.type || 'default';
+
+            // Создаём структуру плашки
+            const labelSpan = document.createElement('span');
+            labelSpan.className = 'plate-label';
+
+            const valueSpan = document.createElement('span');
+            valueSpan.className = 'plate-value';
+
+            plateElement.appendChild(labelSpan);
+            plateElement.appendChild(valueSpan);
+
+            // Добавляем в контейнер
+            this.elements.taskContainer.appendChild(plateElement);
+
+            // Сохраняем в Map
+            this.taskPlates.set(plateId, plateElement);
         }
-        if (this.elements.cutsCounter) {
-            this.elements.cutsCounter.textContent = `${currentCuts}/${maxCuts}`;
+
+        // Обновляем содержимое
+        const labelSpan = plateElement.querySelector('.plate-label');
+        const valueSpan = plateElement.querySelector('.plate-value');
+
+        if (labelSpan) labelSpan.textContent = plateData.label;
+        if (valueSpan) valueSpan.textContent = plateData.value;
+
+        // Обновляем тип если нужно
+        if (plateData.type) {
+            plateElement.dataset.type = plateData.type;
+        }
+    }
+
+    clearTaskPlates() {
+        for (const plateElement of this.taskPlates.values()) {
+            plateElement.remove();
+        }
+        this.taskPlates.clear();
+    }
+
+    updateTaskPlates(plates) {
+        for (const [plateId, plateData] of Object.entries(plates)) {
+            this.updateTaskPlate(plateId, plateData);
         }
     }
 
@@ -91,6 +145,17 @@ class UIManager {
     }
 
     showMessage(message, type = 'success') {
+
+        if (window.audioManager) {
+            if (type === 'success') {
+                window.audioManager.play('success');
+            } else if (type === 'error') {
+                window.audioManager.play('error');
+            } else {
+                window.audioManager.play('click');
+            }
+        }
+
         const messageDiv = document.createElement('div');
         messageDiv.className = `game-message ${type}`;
         messageDiv.textContent = message;

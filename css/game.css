@@ -1,16 +1,16 @@
-/* Контейнер игры - занимает весь экран */
+/* ===== ОСНОВНОЙ КОНТЕЙНЕР ===== */
 .game-container {
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Занимает 100% высоты окна */
-    width: 100vw; /* Занимает 100% ширины окна */
+    height: 100vh;
+    width: 100vw;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 0;
     margin: 0;
-    overflow: hidden; /* Убираем прокрутку */
+    overflow: hidden;
 }
 
-/* Верхняя плашка - фиксированная высота */
+/* ===== ШАПКА ИГРЫ ===== */
 .game-header {
     display: flex;
     align-items: center;
@@ -18,9 +18,19 @@
     background: rgba(255, 255, 255, 0.95);
     padding: 10px 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    height: 80px; /* Фиксированная высота */
-    flex-shrink: 0; /* Не сжимается */
+    height: 80px;
+    flex-shrink: 0;
     box-sizing: border-box;
+}
+
+/* Кнопка назад */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    color: #2d3748;
 }
 
 /* Таймер */
@@ -52,28 +62,103 @@
     font-weight: 500;
 }
 
-/* Основное игровое поле - растягивается на оставшееся пространство */
+/* Кнопки управления */
+.game-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-control {
+    background: #f8f9fa;
+    border: 2px solid #e2e8f0;
+    padding: 8px 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.btn-control:hover {
+    background: white;
+    border-color: #667eea;
+}
+
+.btn-icon {
+    font-size: 18px;
+}
+
+/* ===== ОСНОВНОЕ ИГРОВОЕ ПОЛЕ ===== */
 .game-main {
     display: flex;
-    flex: 1; /* Занимает всё доступное пространство */
-    min-height: 0; /* Важно для flex-элементов */
+    flex: 1;
+    min-height: 0;
     gap: 15px;
     padding: 15px;
     box-sizing: border-box;
-    overflow: hidden; /* Убираем прокрутку внутри */
+    overflow: hidden;
 }
 
-/* Боковые панели - фиксированная ширина */
+/* Боковые панели */
 .game-sidebar {
     width: 280px;
-    flex-shrink: 0; /* Не сжимаются */
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     gap: 15px;
     box-sizing: border-box;
 }
 
-/* Центральная часть - растягивается */
+/* Блоки информации */
+.game-mode-info, .game-task {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+.game-task h2 {
+    font-size: 24px;
+    color: #4a5568;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Счетчики задания - ЕДИНЫЕ ДЛЯ ВСЕХ РЕЖИМОВ */
+.task-counter {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.counter-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.counter-label {
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 16px;
+}
+
+.counter-value {
+    font-weight: 700;
+    font-size: 18px;
+    color: #2d3748;
+    font-family: 'Courier New', monospace;
+}
+
+/* Центральная часть с канвасом */
 .game-center {
     flex: 1;
     display: flex;
@@ -84,11 +169,12 @@
     padding: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
-    min-width: 0; /* Важно для flex-элементов */
-    min-height: 0; /* Важно для flex-элементов */
+    min-width: 0;
+    min-height: 0;
+    position: relative;
 }
 
-/* Канвас - адаптивный */
+/* Канвас */
 #gameCanvas {
     background: white;
     border-radius: 8px;
@@ -102,115 +188,7 @@
     object-fit: contain;
 }
 
-/* Блоки в боковых панелях - с прокруткой если нужно */
-.game-mode-info,
-.game-task {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    box-sizing: border-box;
-    overflow-y: auto; /* Прокрутка внутри если контент не помещается */
-    max-height: 100%;
-}
-
-/* Улучшаем отображение для маленьких экранов */
-@media (max-width: 1200px) {
-    .game-sidebar {
-        width: 240px;
-    }
-}
-
-@media (max-width: 1024px) {
-    .game-main {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .game-sidebar {
-        width: 100%;
-        flex-direction: row;
-        gap: 10px;
-    }
-
-    .game-mode-info,
-    .game-task {
-        flex: 1;
-        min-height: 150px;
-    }
-
-    .game-center {
-        flex: 2; /* Канвасу больше места */
-        min-height: 400px;
-    }
-}
-
-@media (max-width: 768px) {
-    .game-header {
-        flex-direction: column;
-        height: auto;
-        padding: 10px;
-        gap: 10px;
-    }
-
-    .logo-text {
-        font-size: 16px;
-    }
-
-    .timer {
-        font-size: 24px;
-    }
-
-    .btn-text {
-        display: none; /* Скрываем текст на маленьких экранах */
-    }
-
-    .btn-icon {
-        font-size: 24px;
-    }
-
-    .game-main {
-        padding: 10px;
-        gap: 10px;
-    }
-
-    .game-sidebar {
-        flex-direction: column;
-    }
-
-    .game-mode-info,
-    .game-task {
-        min-height: auto;
-    }
-}
-
-/* Для очень маленьких экранов */
-@media (max-height: 700px) {
-    .game-header {
-        height: 60px;
-        padding: 8px 15px;
-    }
-
-    .timer {
-        font-size: 20px;
-    }
-
-    .level-indicator {
-        font-size: 12px;
-    }
-
-    .game-main {
-        padding: 10px;
-        gap: 10px;
-    }
-
-    .game-mode-info,
-    .game-task {
-        padding: 15px;
-    }
-}
-
-/* Оверлей - тоже адаптивный */
+/* ===== ОВЕРЛЕЙ ЗАВЕРШЕНИЯ ===== */
 .overlay {
     position: fixed;
     top: 0;
@@ -242,12 +220,38 @@
     overflow-y: auto;
 }
 
-/* Убираем скролл у body когда оверлей активен */
-body.overlay-active {
-    overflow: hidden;
+.result-stats {
+    margin: 25px 0;
 }
 
-/* Стили для режима "Свой-чужой" */
+.final-score {
+    font-size: 48px;
+    font-weight: 700;
+    color: #667eea;
+    margin: 15px 0;
+}
+
+.overlay-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.btn-overlay {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.btn-overlay.btn-secondary {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+
+/* ===== АНИМАЦИИ ===== */
 .conflict-shape {
     animation: pulseConflict 1.5s infinite;
 }
@@ -257,22 +261,217 @@ body.overlay-active {
     50% { opacity: 0.4; }
 }
 
-/* Блок информации о командах */
-#teamInfo {
-    background: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: blur(10px);
-    border: 2px solid #e2e8f0;
-    max-width: 150px;
+/* ===== АДАПТИВНОСТЬ ===== */
+@media (max-width: 1200px) {
+    .game-sidebar {
+        width: 240px;
+    }
 }
 
-#teamInfo strong {
-    display: block;
-    margin-bottom: 5px;
+@media (max-width: 1024px) {
+    .game-main {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .game-sidebar {
+        width: 100%;
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .game-mode-info, .game-task {
+        flex: 1;
+        min-height: 150px;
+    }
+
+    .game-center {
+        flex: 2;
+        min-height: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .game-header {
+        flex-direction: column;
+        height: auto;
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .timer {
+        font-size: 24px;
+    }
+
+    .btn-text {
+        display: none;
+    }
+
+    .btn-icon {
+        font-size: 24px;
+    }
+
+    .game-main {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .game-sidebar {
+        flex-direction: column;
+    }
+
+    .overlay-buttons {
+        flex-direction: column;
+    }
+}
+
+@media (max-height: 700px) {
+    .game-header {
+        height: 60px;
+        padding: 8px 15px;
+    }
+
+    .timer {
+        font-size: 20px;
+    }
+
+    .level-indicator {
+        font-size: 12px;
+    }
+
+    .game-main {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .game-mode-info, .game-task {
+        padding: 15px;
+    }
+}
+
+
+
+
+/* ===== СТИЛИ ДЛЯ ДИНАМИЧЕСКИХ ПЛАШЕК ===== */
+.task-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.task-plate {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid;
+    animation: plateAppear 0.3s ease-out;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.task-plate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes plateAppear {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.plate-label {
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 16px;
+}
+
+.plate-value {
+    font-weight: 700;
+    font-size: 18px;
     color: #2d3748;
+    font-family: 'Courier New', monospace;
+    background: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    min-width: 80px;
+    text-align: center;
+    border: 2px solid #e2e8f0;
 }
 
-#teamInfo span {
-    display: block;
-    margin: 2px 0;
-    font-weight: 500;
+/* Цвета для разных типов плашек */
+.task-plate[data-type="parts"] {
+    border-left-color: #667eea;
+}
+
+.task-plate[data-type="cuts"] {
+    border-left-color: #48bb78;
+}
+
+.task-plate[data-type="conflicts"] {
+    border-left-color: #ef4444;
+}
+
+.task-plate[data-type="teams"] {
+    border-left-color: #f59e0b;
+}
+
+.task-plate[data-type="time"] {
+    border-left-color: #8b5cf6;
+}
+
+/* Пустое состояние */
+.task-content:empty::after {
+    content: 'Нет активных задач';
+    color: #a0aec0;
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+}
+
+/* ===== ПОДСКАЗКИ КЛАВИАТУРЫ ===== */
+.keyboard-hints {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+}
+
+.keyboard-hints h3 {
+    font-size: 16px;
+    color: #4a5568;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.key-hint {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.key {
+    background: #2d3748;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    min-width: 40px;
+    text-align: center;
+}
+
+.hint-text {
+    font-size: 14px;
+    color: #718096;
 }

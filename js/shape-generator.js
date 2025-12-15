@@ -63,6 +63,8 @@ class ShapeGenerator {
         const sides = 7 + Math.floor(Math.random() * 4);
         const radius = 140 + Math.random() * 70;
 
+        return this.generateStarShape(sides, radius);
+
         if (Math.random() > 0.5) {
             return this.generateStarShape(sides, radius);
         } else {

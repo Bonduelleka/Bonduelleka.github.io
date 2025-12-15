@@ -35,4 +35,10 @@ class GameMode {
     getInstructions() {
         return this.description;
     }
+
+    restartLevel() {
+        // Базовый метод для перезапуска уровня
+        console.log('Restarting level in base mode');
+        this.startLevel();
+    }
 }

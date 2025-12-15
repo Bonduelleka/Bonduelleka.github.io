@@ -16,15 +16,25 @@ class MainMenu {
     bindEvents() {
         // Выбор режима
         document.querySelectorAll('.mode-btn').forEach(btn => {
-            btn.addEventListener('click', () => this.selectMode(btn.dataset.mode));
+            btn.addEventListener('click', () =>
+            {
+                if (window.audioManager) window.audioManager.play('click');
+                this.selectMode(btn.dataset.mode)
+            });
         });
 
-        document.getElementById('saveNickname').addEventListener('click', () => this.saveNickname());
+        document.getElementById('saveNickname').addEventListener('click', () => {
+            if (window.audioManager) window.audioManager.play('click');
+            this.saveNickname();
+        });
         document.getElementById('nickname').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.saveNickname();
         });
 
-        document.getElementById('startGame').addEventListener('click', () => this.startGame());
+        document.getElementById('startGame').addEventListener('click', () => {
+            if (window.audioManager) window.audioManager.play('click');
+            this.startGame();
+        });
 
         document.getElementById('nickname').addEventListener('input', () => {
             this.updateStartButton();

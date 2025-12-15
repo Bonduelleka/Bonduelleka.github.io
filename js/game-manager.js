@@ -19,6 +19,7 @@ class GameManager {
         window.addEventListener('resize', () => this.handleResize());
 
         this.registerModes();
+        this.setupKeyboard();
     }
 
     setupCanvas() {
@@ -74,6 +75,67 @@ class GameManager {
         }
     }
 
+    setupKeyboard() {
+        document.addEventListener('keydown', (e) => {
+            // Игнорируем, если фокус в input поле
+            if (e.target.tagName === 'INPUT') return;
+
+            switch(e.key.toLowerCase()) {
+                case 'r':
+                    this.handleRestartKey();
+                    break;
+                case 'm':
+                    this.toggleSound();
+                    break;
+                case 'escape':
+                    this.handleEscape();
+                    break;
+            }
+        });
+    }
+
+    handleRestartKey() {
+        // Проверяем, не активен ли оверлей
+        const overlay = document.getElementById('gameOverlay');
+        if (overlay && overlay.classList.contains('active')) return;
+
+        // Воспроизводим звук
+        if (window.audioManager) {
+            window.audioManager.play('click');
+        }
+
+        // Показываем подтверждение
+        if (confirm('Перезапустить уровень? (R)')) {
+            this.restartLevel();
+        }
+    }
+
+    toggleSound() {
+        if (window.audioManager) {
+            const isMuted = window.audioManager.toggleMute();
+            // Можно показать уведомление
+            if (window.uiManager) {
+                window.uiManager.showMessage(
+                    isMuted ? 'Звук выключен' : 'Звук включен',
+                    'info'
+                );
+            }
+        }
+    }
+
+    handleEscape() {
+        const overlay = document.getElementById('gameOverlay');
+        if (overlay && overlay.classList.contains('active')) {
+            // Если оверлей активен, возвращаем в меню
+            window.location.href = 'index.html';
+        } else {
+            // Иначе показываем подтверждение
+            if (confirm('Вернуться в главное меню? (ESC)')) {
+                window.location.href = 'index.html';
+            }
+        }
+    }
+
     handleResize() {
         // Дебаунс ресайза для производительности
         clearTimeout(this.resizeTimeout);
@@ -112,12 +174,6 @@ class GameManager {
 
         // Запускаем таймер
         this.startTimer();
-
-        // Обновляем UI
-        if (window.uiManager) {
-            window.uiManager.setModeInfo(this.currentMode.name, this.currentMode.description);
-            this.updateUIFromMode();
-        }
     }
 
     startTimer() {
@@ -168,23 +224,5 @@ class GameManager {
             this.currentMode.cleanup();
         }
         clearInterval(this.timer);
-    }
-
-    updateUIFromMode() {
-        if (!this.currentMode || !window.uiManager) return;
-
-        const state = this.currentMode.getGameState();
-        if (state) {
-            window.uiManager.updateTask(
-                state.currentPieces,
-                state.targetPieces,
-                state.cutsMade,
-                state.maxCuts
-            );
-
-            if (state.level && window.uiManager.elements.level) {
-                window.uiManager.elements.level.textContent = `Уровень ${state.level}`;
-            }
-        }
     }
 }

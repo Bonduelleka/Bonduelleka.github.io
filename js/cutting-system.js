@@ -7,6 +7,10 @@ class Point {
     distanceTo(other) {
         return Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
     }
+
+    equals(other, epsilon = 0.001) {
+        return Math.abs(this.x - other.x) < epsilon && Math.abs(this.y - other.y) < epsilon;
+    }
 }
 
 class Shape {
@@ -52,6 +56,13 @@ class Shape {
 
         ctx.shadowBlur = 0;
         ctx.shadowColor = 'transparent';
+
+        let centerPoint = this.center;
+
+        ctx.fillStyle = '#000';
+        ctx.beginPath();
+        ctx.arc(centerPoint.x, centerPoint.y, 4, 0, Math.PI * 2); // Чуть больше точка для лучшей видимости
+        ctx.fill();
     }
 
     containsPoint(x, y) {
@@ -104,12 +115,32 @@ class Shape {
 
         if (ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1) {
             return new Point(
-                p1.x + ua * (p2.x - p1.x),
-                p1.y + ua * (p2.y - p1.y)
-            );
+                    p1.x + ua * (p2.x - p1.x),
+                    p1.y + ua * (p2.y - p1.y)
+                );
         }
 
         return null;
+    }
+
+    static sortIntersectionsAlongLine(intersections, lineStart, lineEnd) {
+        return intersections.sort((a, b) => {
+            // Вычисляем параметр t вдоль линии для каждой точки пересечения
+            const dx = lineEnd.x - lineStart.x;
+            const dy = lineEnd.y - lineStart.y;
+
+            // Для a
+            const t_a = dx !== 0 ?
+                (a.point.x - lineStart.x) / dx :
+                (a.point.y - lineStart.y) / dy;
+
+            // Для b
+            const t_b = dx !== 0 ?
+                (b.point.x - lineStart.x) / dx :
+                (b.point.y - lineStart.y) / dy;
+
+            return t_a - t_b;
+        });
     }
 }
 
@@ -222,12 +253,11 @@ class CuttingSystem {
         if (!this.cutStart || !this.cutEnd) return;
 
         const newShapes = [];
-        let totalCuts = 0;
+        let isCut = false;
 
         for (const shape of this.shapes) {
             const intersections = [];
 
-            // Находим все пересечения разреза с ребрами фигуры
             for (let i = 0; i < shape.points.length; i++) {
                 const p1 = shape.points[i];
                 const p2 = shape.points[(i + 1) % shape.points.length];
@@ -246,50 +276,85 @@ class CuttingSystem {
                 }
             }
 
-            // Если есть ровно 2 пересечения - делим фигуру
-            if (intersections.length === 2) {
-                totalCuts++;
-                intersections.sort((a, b) => a.edgeIndex - b.edgeIndex);
+            if (intersections.length < 2) {
+                newShapes.push(shape);
+                continue;
+            }
 
-                const [intersect1, intersect2] = intersections;
-                const shape1Points = [];
-                const shape2Points = [];
+            const splitShapes = [];
+            const points = [];
+            const startShapeEdge = intersections[0].edgeIndex;
 
-                // Первая фигура
-                for (let i = 0; i <= intersect1.edgeIndex; i++) {
-                    shape1Points.push(shape.points[i]);
+            for (let i = 0; i < shape.points.length; i++)
+            {
+                let currentEdge = (i + startShapeEdge) % shape.points.length;
+                points.push(shape.points[currentEdge]);
+
+                let startNewShape = intersections.find(inter => inter.edgeIndex == currentEdge);
+                if (startNewShape)
+                {
+                    let ind = intersections.indexOf(startNewShape);
+                    if (ind < intersections.length - 1)
+                    {
+                        let endNewShape = intersections[ind + 1];
+
+                        let midX = (startNewShape.point.x + endNewShape.point.x) / 2;
+                        let midY = (startNewShape.point.y + endNewShape.point.y) / 2;
+
+                        if (shape.containsPoint(midX, midY))
+                        {
+                            points.push(startNewShape.point);
+                            let newShapePoints = [];
+                            newShapePoints.push(startNewShape.point);
+
+                            let tempEdgeIndex = currentEdge;
+                            let tempI = i;
+
+                            while (tempEdgeIndex != endNewShape.edgeIndex)
+                            {
+                                tempEdgeIndex = (tempEdgeIndex + 1) % shape.points.length;
+                                newShapePoints.push(shape.points[tempEdgeIndex]);
+                                tempI++;
+                            }
+
+                            i = tempI;
+
+                            newShapePoints.push(endNewShape.point);
+                            splitShapes.push(new Shape(newShapePoints));
+                            points.push(endNewShape.point);
+                            isCut = true;
+                        }
+
+                    }
                 }
-                shape1Points.push(intersect1.point);
-                shape1Points.push(intersect2.point);
-                for (let i = intersect2.edgeIndex + 1; i < shape.points.length; i++) {
-                    shape1Points.push(shape.points[i]);
-                }
+            }
 
-                // Вторая фигура
-                shape2Points.push(intersect1.point);
-                for (let i = intersect1.edgeIndex + 1; i <= intersect2.edgeIndex; i++) {
-                    shape2Points.push(shape.points[i]);
-                }
-                shape2Points.push(intersect2.point);
+            splitShapes.push(new Shape(points));
 
-                // Создаём новые фигуры с сохранением цвета оригинала
-                newShapes.push(new Shape(shape1Points, shape.color));
-                newShapes.push(new Shape(shape2Points, shape.color));
+            if (splitShapes.length > 0) {
+                newShapes.push(...splitShapes);
             } else {
-                // Если не 2 пересечения - оставляем фигуру как есть
                 newShapes.push(shape);
             }
         }
 
-        // Обновляем список фигур
         this.shapes = newShapes;
 
-        // Вызываем колбэк с результатом разреза
-        if (this.onCutCallback && totalCuts > 0) {
-            this.onCutCallback(totalCuts, this.shapes.length);
+        if (this.onCutCallback && isCut) {
+            const dx = this.cutEnd.x - this.cutStart.x;
+            const dy = this.cutEnd.y - this.cutStart.y;
+            const cutLength = Math.sqrt(dx * dx + dy * dy);
+            const velocity = Math.min(2, cutLength / 50); // Нормализуем
+
+            // Воспроизводим звук разреза
+            if (window.audioManager) {
+                window.audioManager.playCutSound(velocity);
+            }
+
+            this.onCutCallback(this.shapes.length);
         }
 
-        return totalCuts;
+        return;
     }
 
     setShapes(shapes) {

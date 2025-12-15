@@ -15,11 +15,12 @@ class FriendFoeMode extends GameMode {
             maxCuts: 5,
             targetTeams: 2, // Количество команд на уровне
             currentConflicts: 0,
-            maxConflictsAllowed: 0, // Максимально допустимое количество конфликтных фигур
             isComplete: false,
             timeLeft: 300
         };
         this.conflictShapes = new Set(); // ID фигур с конфликтами
+        this.initialShape = null;
+        this.initialFlags = null;
     }
 
     init(canvas, width, height) {
@@ -44,21 +45,33 @@ class FriendFoeMode extends GameMode {
     startLevel() {
         console.log(`Starting Friend-Foe mode level ${this.gameState.level}`);
 
+        // Очищаем системы
         this.cuttingSystem.clear();
         this.flagSystem.clear();
         this.conflictShapes.clear();
+
+        // Сбрасываем счётчики
         this.gameState.cutsMade = 0;
         this.gameState.currentConflicts = 0;
+        this.gameState.isComplete = false;
 
-        // Генерация параметров в зависимости от уровня
+        // Генерация параметров
         this.generateLevelParameters();
 
         // Генерация фигуры
         const shape = this.shapeGenerator.generateRandomShape(Math.min(this.gameState.level, 3));
+
+        // СОХРАНЯЕМ КОПИЮ фигуры для восстановления
+        this.initialShape = this.cloneShape(shape);
+
+        // Устанавливаем фигуру
         this.cuttingSystem.setShapes([shape]);
 
         // Добавляем флаги
         this.addFlagsToShape(shape);
+
+        // СОХРАНЯЕМ КОПИЮ флагов
+        this.initialFlags = this.cloneFlags(this.flagSystem.flags);
 
         // Проверяем начальное состояние
         this.updateConflicts();
@@ -67,18 +80,35 @@ class FriendFoeMode extends GameMode {
         this.updateUI();
     }
 
+    cloneShape(shape) {
+        return {
+            points: shape.points.map(p => ({ x: p.x, y: p.y })),
+            color: shape.color,
+            id: shape.id
+        };
+    }
+
+    cloneFlags(flags) {
+        return flags.map(flag => ({
+            x: flag.x,
+            y: flag.y,
+            color: flag.color,
+            team: flag.team,
+            height: flag.height,
+            flagWidth: flag.flagWidth,
+            poleWidth: flag.poleWidth,
+            poleHeight: flag.poleHeight
+        }));
+    }
+
     generateLevelParameters() {
         // Базовые параметры
         const baseCuts = 5;
         const baseTeams = 2;
-        const baseConflictsAllowed = 1;
 
         // Увеличиваем сложность с уровнем
         this.gameState.maxCuts = Math.max(2, baseCuts - Math.floor(this.gameState.level / 2));
         this.gameState.targetTeams = Math.min(4, baseTeams + Math.floor((this.gameState.level - 1) / 3));
-        this.gameState.maxConflictsAllowed = Math.max(0, baseConflictsAllowed - Math.floor(this.gameState.level / 4));
-
-        console.log(`Level ${this.gameState.level}: teams=${this.gameState.targetTeams}, cuts=${this.gameState.maxCuts}, conflicts=${this.gameState.maxConflictsAllowed}`);
     }
 
     addFlagsToShape(shape) {
@@ -104,7 +134,7 @@ class FriendFoeMode extends GameMode {
         this.flagSystem.flags.sort(() => Math.random() - 0.5);
     }
 
-    onCutMade(cutsMade, newShapeCount) {
+    onCutMade(newShapeCount) {
         if (!this.isActive) return;
 
         this.gameState.cutsMade++;
@@ -145,11 +175,10 @@ class FriendFoeMode extends GameMode {
         // 1. Нет конфликтов ИЛИ количество конфликтов в пределах допустимого
         // 2. Не превышено максимальное количество разрезов
 
-        const conflictsOk = this.gameState.currentConflicts <= this.gameState.maxConflictsAllowed;
+        const conflictsOk = this.gameState.currentConflicts < 1;
         const cutsOk = this.gameState.cutsMade <= this.gameState.maxCuts;
 
         if (conflictsOk && cutsOk) {
-            // Дополнительная проверка: если все флаги изолированы по командам
             const allShapesOk = this.areAllShapesValid();
 
             if (allShapesOk || this.gameState.currentConflicts === 0) {
@@ -176,6 +205,55 @@ class FriendFoeMode extends GameMode {
         return true;
     }
 
+    restartLevel() {
+        if (!this.initialShape || !this.initialFlags) {
+            console.warn('No initial state to restore');
+            this.startLevel(); // Просто перезапускаем уровень
+            return;
+        }
+
+        console.log('Restarting current level');
+
+        // Очищаем системы
+        this.cuttingSystem.clear();
+        this.flagSystem.clear();
+        this.conflictShapes.clear();
+
+        // Восстанавливаем фигуру
+        const restoredPoints = this.initialShape.points.map(p => new Point(p.x, p.y));
+        const restoredShape = new Shape(restoredPoints, this.initialShape.color);
+        restoredShape.id = this.initialShape.id;
+
+        this.cuttingSystem.setShapes([restoredShape]);
+
+        // Восстанавливаем флаги
+        this.flagSystem.clear();
+        for (const flagData of this.initialFlags) {
+            const flag = new Flag(flagData.x, flagData.y, flagData.color, flagData.team);
+            flag.height = flagData.height;
+            flag.flagWidth = flagData.flagWidth;
+            flag.poleWidth = flagData.poleWidth;
+            flag.poleHeight = flagData.poleHeight;
+            this.flagSystem.flags.push(flag);
+        }
+
+        // Сбрасываем счётчики
+        this.gameState.cutsMade = 0;
+        this.gameState.currentConflicts = 0;
+        this.gameState.isComplete = false;
+
+        // Обновляем проверку конфликтов
+        this.updateConflicts();
+
+        // Обновляем UI
+        this.updateUI();
+
+        // Показываем сообщение
+        if (window.uiManager) {
+            window.uiManager.showMessage('Уровень сброшен', 'info');
+        }
+    }
+
     completeLevel() {
         // Расчёт очков
         let levelScore = 150; // Базовые очки больше чем в обычном режиме
@@ -183,11 +261,6 @@ class FriendFoeMode extends GameMode {
         // Бонус за оставшиеся разрезы
         const remainingCuts = this.gameState.maxCuts - this.gameState.cutsMade;
         levelScore += remainingCuts * 75;
-
-        // Бонус за отсутствие конфликтов
-        if (this.gameState.currentConflicts === 0) {
-            levelScore += 100;
-        }
 
         // Бонус за сложность (больше команд = сложнее)
         const teamBonus = (this.gameState.targetTeams - 1) * 50;
@@ -214,7 +287,7 @@ class FriendFoeMode extends GameMode {
         }
 
         // Перезапускаем уровень через 2 секунды
-        setTimeout(() => this.startLevel(), 2000);
+        setTimeout(() => this.restartLevel(), 2000);
     }
 
     onShapeHover(shape) {
@@ -288,65 +361,35 @@ class FriendFoeMode extends GameMode {
     updateUI() {
         if (!window.uiManager) return;
 
-        window.uiManager.updateTask(
-            this.gameState.currentConflicts,
-            this.gameState.maxConflictsAllowed,
-            this.gameState.cutsMade,
-            this.gameState.maxCuts
-        );
+        // Обновляем плашки через UI Manager
+        window.uiManager.updateTaskPlates({
+            cuts: {
+                label: 'Разрезы:',
+                value: `${this.gameState.cutsMade}/${this.gameState.maxCuts}`,
+                type: 'cuts'
+            },
+            conflicts: {
+                label: 'Конфликты:',
+                value: `${this.gameState.currentConflicts}`,
+                type: 'conflicts'
+            },
+            teams: {
+                label: 'Команд:',
+                value: this.gameState.targetTeams,
+                type: 'teams'
+            }
+        });
 
         // Обновляем уровень
         if (window.uiManager.elements.level) {
             window.uiManager.elements.level.textContent = `Уровень ${this.gameState.level}`;
         }
-
-        // Показываем информацию о командах
-        this.showTeamInfo();
-    }
-
-    showTeamInfo() {
-        // Создаём или обновляем блок с информацией о командах
-        let teamInfo = document.getElementById('teamInfo');
-        if (!teamInfo) {
-            teamInfo = document.createElement('div');
-            teamInfo.id = 'teamInfo';
-            teamInfo.style.cssText = `
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                background: white;
-                padding: 10px;
-                border-radius: 8px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                font-size: 12px;
-                z-index: 100;
-            `;
-            document.querySelector('.game-center').appendChild(teamInfo);
-        }
-
-        // Формируем информацию о командах
-        let html = '<strong>Команды:</strong><br>';
-        for (let i = 0; i < this.gameState.targetTeams; i++) {
-            const team = this.flagSystem.teams[i];
-            if (team) {
-                const count = this.flagSystem.getFlagsByTeam(team.id).length;
-                html += `<span style="color:${team.color}">● ${team.name}: ${count}</span><br>`;
-            }
-        }
-
-        // Добавляем информацию о конфликтах
-        if (this.gameState.currentConflicts > 0) {
-            html += `<br><strong style="color:#EF4444">Конфликтов: ${this.gameState.currentConflicts}</strong>`;
-        }
-
-        teamInfo.innerHTML = html;
     }
 
     getGameState() {
         return {
             level: this.gameState.level,
             score: this.gameState.score,
-            conflicts: `${this.gameState.currentConflicts}/${this.gameState.maxConflictsAllowed}`,
             cuts: `${this.gameState.cutsMade}/${this.gameState.maxCuts}`,
             teams: this.gameState.targetTeams
         };
