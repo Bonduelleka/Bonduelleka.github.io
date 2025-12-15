@@ -17,7 +17,6 @@ class UIManager {
     }
 
     bindEvents() {
-        // Кнопка сброса уровня
         const restartBtn = document.getElementById('restartLevel');
         if (restartBtn) {
             restartBtn.addEventListener('click', () => {
@@ -29,7 +28,6 @@ class UIManager {
             });
         }
 
-        // Кнопка возврата в меню
         const backBtn = document.getElementById('backToMenu');
         if (backBtn) {
             backBtn.addEventListener('click', (e) => {
@@ -40,7 +38,6 @@ class UIManager {
             });
         }
 
-        // Кнопки оверлея
         const playAgainBtn = document.getElementById('playAgain');
         const backToMenuBtn = document.getElementById('backToMenuBtn');
 
@@ -66,7 +63,7 @@ class UIManager {
         this.elements.timer.textContent =
             `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 
-        // Предупреждение при малом времени
+
         if (seconds <= 30) {
             this.elements.timer.classList.add('warning');
         } else {
@@ -88,12 +85,10 @@ class UIManager {
         let plateElement = this.taskPlates.get(plateId);
 
         if (!plateElement) {
-            // Создаём новую плашку
             plateElement = document.createElement('div');
             plateElement.className = 'task-plate';
             plateElement.dataset.type = plateData.type || 'default';
 
-            // Создаём структуру плашки
             const labelSpan = document.createElement('span');
             labelSpan.className = 'plate-label';
 
@@ -103,21 +98,17 @@ class UIManager {
             plateElement.appendChild(labelSpan);
             plateElement.appendChild(valueSpan);
 
-            // Добавляем в контейнер
             this.elements.taskContainer.appendChild(plateElement);
 
-            // Сохраняем в Map
             this.taskPlates.set(plateId, plateElement);
         }
 
-        // Обновляем содержимое
         const labelSpan = plateElement.querySelector('.plate-label');
         const valueSpan = plateElement.querySelector('.plate-value');
 
         if (labelSpan) labelSpan.textContent = plateData.label;
         if (valueSpan) valueSpan.textContent = plateData.value;
 
-        // Обновляем тип если нужно
         if (plateData.type) {
             plateElement.dataset.type = plateData.type;
         }

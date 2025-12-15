@@ -34,12 +34,10 @@ class ShapeGenerator {
     }
 
     generateLevel1Shape() {
-        // (треугольник, квадрат, пятиугольник)
         const types = [3, 4, 5];
         const sides = types[Math.floor(Math.random() * types.length)];
         const radius = 100 + Math.random() * 50;
 
-        // Небольшое случайное смещение от центра
         const offsetX = (Math.random() - 0.5) * 100;
         const offsetY = (Math.random() - 0.5) * 100;
 
@@ -47,7 +45,6 @@ class ShapeGenerator {
     }
 
     generateLevel2Shape() {
-        // (шестиугольники, восьмиугольники)
         const types = [6, 7, 8];
         const sides = types[Math.floor(Math.random() * types.length)];
         const radius = 120 + Math.random() * 60;
@@ -59,11 +56,8 @@ class ShapeGenerator {
     }
 
     generateLevel3Shape() {
-        // неправильные фигуры
         const sides = 7 + Math.floor(Math.random() * 4);
         const radius = 140 + Math.random() * 70;
-
-        return this.generateStarShape(sides, radius);
 
         if (Math.random() > 0.5) {
             return this.generateStarShape(sides, radius);
@@ -97,12 +91,11 @@ class ShapeGenerator {
         }
     }
 
-    // для обучения
     generateTutorialShapes() {
         return [
-            this.generateRegularPolygon(3, 80, -150, 0),   // Треугольник
-            this.generateRegularPolygon(4, 80, 0, 0),      // Квадрат
-            this.generateRegularPolygon(5, 80, 150, 0)     // Пятиугольник
+            this.generateRegularPolygon(3, 80, -150, 0),
+            this.generateRegularPolygon(4, 80, 0, 0),
+            this.generateRegularPolygon(5, 80, 150, 0)
         ];
     }
 }

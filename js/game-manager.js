@@ -10,12 +10,10 @@ class GameManager {
         this.currentMode = null;
         this.modes = {};
         this.timer = null;
-        this.timeLeft = 300;
+        this.timeLeft = 40;
 
-        // Инициализируем размеры
         this.setupCanvas();
 
-        // Слушаем изменение размера окна
         window.addEventListener('resize', () => this.handleResize());
 
         this.registerModes();
@@ -26,10 +24,8 @@ class GameManager {
         const container = this.canvas.parentElement;
         if (!container) return;
 
-        // Устанавливаем начальный размер
         this.resizeCanvas();
 
-        // Гарантируем, что канвас виден
         this.canvas.style.display = 'block';
     }
 
@@ -37,7 +33,6 @@ class GameManager {
         const container = this.canvas.parentElement;
         if (!container) return;
 
-        // Получаем доступное пространство
         const containerStyle = window.getComputedStyle(container);
         const paddingX = parseFloat(containerStyle.paddingLeft) + parseFloat(containerStyle.paddingRight);
         const paddingY = parseFloat(containerStyle.paddingTop) + parseFloat(containerStyle.paddingBottom);
@@ -45,23 +40,19 @@ class GameManager {
         const maxWidth = container.clientWidth - paddingX;
         const maxHeight = container.clientHeight - paddingY;
 
-        // Сохраняем пропорции 4:3 (как в исходном дизайне 800x600)
         const targetAspectRatio = 4/3;
         const currentAspectRatio = maxWidth / maxHeight;
 
         let width, height;
 
         if (currentAspectRatio > targetAspectRatio) {
-            // Шире чем нужно - ограничиваем по высоте
             height = maxHeight;
             width = height * targetAspectRatio;
         } else {
-            // Уже чем нужно - ограничиваем по ширине
             width = maxWidth;
             height = width / targetAspectRatio;
         }
 
-        // Устанавливаем размеры
         this.canvas.width = Math.floor(width);
         this.canvas.height = Math.floor(height);
         this.canvas.style.width = `${width}px`;
@@ -69,7 +60,6 @@ class GameManager {
 
         console.log(`Canvas resized to: ${width}x${height}`);
 
-        // Если есть активный режим - сообщаем ему об изменении размера
         if (this.currentMode && this.currentMode.onResize) {
             this.currentMode.onResize(width, height);
         }
@@ -77,7 +67,6 @@ class GameManager {
 
     setupKeyboard() {
         document.addEventListener('keydown', (e) => {
-            // Игнорируем, если фокус в input поле
             if (e.target.tagName === 'INPUT') return;
 
             switch(e.key.toLowerCase()) {
@@ -95,16 +84,13 @@ class GameManager {
     }
 
     handleRestartKey() {
-        // Проверяем, не активен ли оверлей
         const overlay = document.getElementById('gameOverlay');
         if (overlay && overlay.classList.contains('active')) return;
 
-        // Воспроизводим звук
         if (window.audioManager) {
             window.audioManager.play('click');
         }
 
-        // Показываем подтверждение
         if (confirm('Перезапустить уровень? (R)')) {
             this.restartLevel();
         }
@@ -113,7 +99,6 @@ class GameManager {
     toggleSound() {
         if (window.audioManager) {
             const isMuted = window.audioManager.toggleMute();
-            // Можно показать уведомление
             if (window.uiManager) {
                 window.uiManager.showMessage(
                     isMuted ? 'Звук выключен' : 'Звук включен',
@@ -126,10 +111,8 @@ class GameManager {
     handleEscape() {
         const overlay = document.getElementById('gameOverlay');
         if (overlay && overlay.classList.contains('active')) {
-            // Если оверлей активен, возвращаем в меню
             window.location.href = 'index.html';
         } else {
-            // Иначе показываем подтверждение
             if (confirm('Вернуться в главное меню? (ESC)')) {
                 window.location.href = 'index.html';
             }
@@ -137,7 +120,6 @@ class GameManager {
     }
 
     handleResize() {
-        // Дебаунс ресайза для производительности
         clearTimeout(this.resizeTimeout);
         this.resizeTimeout = setTimeout(() => {
             this.resizeCanvas();
@@ -145,23 +127,19 @@ class GameManager {
     }
 
     registerModes() {
-        // Регистрируем все доступные режимы
         this.modes = {
             'cut': CutMode,
             'friend-foe': FriendFoeMode
-            // 'future': FutureMode - добавишь позже
         };
     }
 
     startGame(modeName) {
         console.log(`Starting game mode: ${modeName}`);
 
-        // Останавливаем предыдущий режим, если есть
         if (this.currentMode) {
             this.currentMode.cleanup();
         }
 
-        // Создаём новый режим
         const ModeClass = this.modes[modeName];
         if (!ModeClass) {
             console.error(`Mode ${modeName} not found!`);
@@ -172,7 +150,6 @@ class GameManager {
         this.currentMode.init(this.canvas, this.canvas.width, this.canvas.height);
         this.currentMode.start();
 
-        // Запускаем таймер
         this.startTimer();
     }
 
@@ -187,7 +164,6 @@ class GameManager {
                 this.finishGame('Время вышло!');
             }
 
-            // Обновляем таймер в UI
             if (window.uiManager) {
                 window.uiManager.updateTimer(this.timeLeft);
             }
@@ -201,12 +177,10 @@ class GameManager {
             const score = this.currentMode.gameState.score;
             const level = this.currentMode.gameState.level;
 
-            // Сохраняем в рейтинг
             const ratingSystem = new RatingSystem();
             const nickname = localStorage.getItem('game_nickname');
             ratingSystem.saveRating('cut', nickname, score);
 
-            // Показываем результаты
             if (window.uiManager) {
                 window.uiManager.showResults(reason, score, level, 300 - this.timeLeft);
             }

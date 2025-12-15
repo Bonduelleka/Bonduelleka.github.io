@@ -14,7 +14,6 @@ class MainMenu {
     }
 
     bindEvents() {
-        // Выбор режима
         document.querySelectorAll('.mode-btn').forEach(btn => {
             btn.addEventListener('click', () =>
             {
@@ -46,12 +45,10 @@ class MainMenu {
 
         this.currentMode = mode;
 
-        // Обновляем активную кнопку
         document.querySelectorAll('.mode-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.mode === mode);
         });
 
-        // Обновляем текст
         const modeNames = {
             'cut': 'Разрежь на части',
             'future': 'Будущий режим'
@@ -60,7 +57,6 @@ class MainMenu {
         document.getElementById('ratingMode').textContent = modeNames[mode] || mode;
         document.querySelector('.selected-mode').textContent = `(${modeNames[mode] || mode})`;
 
-        // Загружаем рейтинг для выбранного режима
         this.loadRating();
         this.updateStartButton();
     }
@@ -165,10 +161,8 @@ class MainMenu {
             return;
         }
 
-        // Сохраняем выбранный режим
         localStorage.setItem('game_mode', this.currentMode);
 
-        // Переходим на игровой экран
         window.location.href = 'game.html';
     }
 }

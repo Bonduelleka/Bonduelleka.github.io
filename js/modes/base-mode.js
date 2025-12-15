@@ -7,7 +7,6 @@ class GameMode {
         this.ctx = null;
     }
 
-    // Методы, которые должны быть реализованы в дочерних классах
     init(canvas) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
@@ -37,7 +36,6 @@ class GameMode {
     }
 
     restartLevel() {
-        // Базовый метод для перезапуска уровня
         console.log('Restarting level in base mode');
         this.startLevel();
     }

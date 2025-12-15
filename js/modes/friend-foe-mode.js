@@ -171,26 +171,23 @@ class FriendFoeMode extends GameMode {
     }
 
     checkLevelCompletion() {
-        // Уровень пройден, если:
-        // 1. Нет конфликтов ИЛИ количество конфликтов в пределах допустимого
-        // 2. Не превышено максимальное количество разрезов
-
         const conflictsOk = this.gameState.currentConflicts < 1;
-        const cutsOk = this.gameState.cutsMade <= this.gameState.maxCuts;
+        const cutsOk = this.gameState.cutsMade < this.gameState.maxCuts;
 
-        if (conflictsOk && cutsOk) {
+        if (this.gameState.currentConflicts < 1 && this.gameState.cutsMade <= this.gameState.maxCuts) {
             const allShapesOk = this.areAllShapesValid();
 
             if (allShapesOk || this.gameState.currentConflicts === 0) {
                 this.completeLevel();
+            } else if (this.gameState.cutsMade == this.gameState.maxCuts) {
+                this.failLevel('Закончились разрезы!');
             }
-        } else if (!cutsOk) {
+        } else if (this.gameState.cutsMade == this.gameState.maxCuts) {
             this.failLevel('Закончились разрезы!');
         }
     }
 
     areAllShapesValid() {
-        // Проверяем, что в каждой фигуре флаги только одной команды
         for (const shape of this.cuttingSystem.shapes) {
             const flagsInShape = this.flagSystem.getFlagsInShape(shape);
             if (flagsInShape.length > 0) {
@@ -208,25 +205,22 @@ class FriendFoeMode extends GameMode {
     restartLevel() {
         if (!this.initialShape || !this.initialFlags) {
             console.warn('No initial state to restore');
-            this.startLevel(); // Просто перезапускаем уровень
+            this.startLevel();
             return;
         }
 
         console.log('Restarting current level');
 
-        // Очищаем системы
         this.cuttingSystem.clear();
         this.flagSystem.clear();
         this.conflictShapes.clear();
 
-        // Восстанавливаем фигуру
         const restoredPoints = this.initialShape.points.map(p => new Point(p.x, p.y));
         const restoredShape = new Shape(restoredPoints, this.initialShape.color);
         restoredShape.id = this.initialShape.id;
 
         this.cuttingSystem.setShapes([restoredShape]);
 
-        // Восстанавливаем флаги
         this.flagSystem.clear();
         for (const flagData of this.initialFlags) {
             const flag = new Flag(flagData.x, flagData.y, flagData.color, flagData.team);
@@ -237,39 +231,31 @@ class FriendFoeMode extends GameMode {
             this.flagSystem.flags.push(flag);
         }
 
-        // Сбрасываем счётчики
         this.gameState.cutsMade = 0;
         this.gameState.currentConflicts = 0;
         this.gameState.isComplete = false;
 
-        // Обновляем проверку конфликтов
         this.updateConflicts();
 
-        // Обновляем UI
         this.updateUI();
 
-        // Показываем сообщение
         if (window.uiManager) {
             window.uiManager.showMessage('Уровень сброшен', 'info');
         }
     }
 
     completeLevel() {
-        // Расчёт очков
-        let levelScore = 150; // Базовые очки больше чем в обычном режиме
+        let levelScore = 150;
 
-        // Бонус за оставшиеся разрезы
         const remainingCuts = this.gameState.maxCuts - this.gameState.cutsMade;
         levelScore += remainingCuts * 75;
 
-        // Бонус за сложность (больше команд = сложнее)
         const teamBonus = (this.gameState.targetTeams - 1) * 50;
         levelScore += teamBonus;
 
         this.gameState.score += levelScore;
         this.gameState.level++;
 
-        // Показываем сообщение
         if (window.uiManager) {
             const message = this.gameState.currentConflicts === 0 ?
                 `Идеально! Уровень пройден! +${levelScore} очков` :
@@ -277,7 +263,6 @@ class FriendFoeMode extends GameMode {
             window.uiManager.showMessage(message, 'success');
         }
 
-        // Запускаем следующий уровень через 1.5 секунды
         setTimeout(() => this.startLevel(), 1500);
     }
 
@@ -286,28 +271,23 @@ class FriendFoeMode extends GameMode {
             window.uiManager.showMessage(reason, 'error');
         }
 
-        // Перезапускаем уровень через 2 секунды
         setTimeout(() => this.restartLevel(), 2000);
     }
 
     onShapeHover(shape) {
-        // Подсвечиваем фигуру при наведении
         shape.isHovered = true;
 
-        // Если есть конфликт, показываем информацию
         if (shape.hasConflict && shape.conflictTeams) {
             const teamNames = shape.conflictTeams.map(teamId => {
                 const team = this.flagSystem.teams.find(t => t.id === teamId);
                 return team ? team.name : `Команда ${teamId}`;
             }).join(' и ');
 
-            // Можно добавить всплывающую подсказку
             console.log(`Конфликт: ${teamNames} на одной фигуре`);
         }
     }
 
     onShapeLeave() {
-        // Убираем подсветку со всех фигур
         for (const shape of this.cuttingSystem.shapes) {
             shape.isHovered = false;
         }
@@ -316,24 +296,18 @@ class FriendFoeMode extends GameMode {
     animate() {
         if (!this.isActive) return;
 
-        // Очищаем канвас
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Рисуем фон
         this.ctx.fillStyle = '#f8f9fa';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Рисуем фигуры через cutting system
         for (const shape of this.cuttingSystem.shapes) {
-            // Модифицируем цвет для конфликтных фигур
             if (shape.hasConflict) {
                 const originalColor = shape.color;
-                // Делаем цвет более прозрачным и добавляем красный оттенок
                 shape.color = originalColor.replace('0.7', '0.4');
                 shape.draw(this.ctx);
-                shape.color = originalColor; // Восстанавливаем цвет
+                shape.color = originalColor;
 
-                // Добавляем красную обводку для конфликтных фигур
                 this.ctx.strokeStyle = '#EF4444';
                 this.ctx.lineWidth = 4;
                 this.ctx.beginPath();
@@ -347,21 +321,16 @@ class FriendFoeMode extends GameMode {
                 shape.draw(this.ctx);
             }
         }
-
-        // Рисуем флаги поверх фигур
         this.flagSystem.draw(this.ctx);
 
-        // Рисуем линию разреза (если есть)
         this.cuttingSystem.drawCutLine();
 
-        // Запрашиваем следующий кадр
         requestAnimationFrame(() => this.animate());
     }
 
     updateUI() {
         if (!window.uiManager) return;
 
-        // Обновляем плашки через UI Manager
         window.uiManager.updateTaskPlates({
             cuts: {
                 label: 'Разрезы:',
@@ -380,7 +349,6 @@ class FriendFoeMode extends GameMode {
             }
         });
 
-        // Обновляем уровень
         if (window.uiManager.elements.level) {
             window.uiManager.elements.level.textContent = `Уровень ${this.gameState.level}`;
         }
@@ -404,7 +372,6 @@ class FriendFoeMode extends GameMode {
             this.flagSystem.clear();
         }
 
-        // Удаляем блок с информацией о командах
         const teamInfo = document.getElementById('teamInfo');
         if (teamInfo) {
             teamInfo.remove();

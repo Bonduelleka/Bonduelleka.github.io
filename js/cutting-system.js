@@ -56,17 +56,9 @@ class Shape {
 
         ctx.shadowBlur = 0;
         ctx.shadowColor = 'transparent';
-
-        let centerPoint = this.center;
-
-        ctx.fillStyle = '#000';
-        ctx.beginPath();
-        ctx.arc(centerPoint.x, centerPoint.y, 4, 0, Math.PI * 2); // Чуть больше точка для лучшей видимости
-        ctx.fill();
     }
 
     containsPoint(x, y) {
-        // Алгоритм ray casting для проверки нахождения точки внутри полигона
         let inside = false;
         for (let i = 0, j = this.points.length - 1; i < this.points.length; j = i++) {
             const xi = this.points[i].x, yi = this.points[i].y;
@@ -125,16 +117,13 @@ class Shape {
 
     static sortIntersectionsAlongLine(intersections, lineStart, lineEnd) {
         return intersections.sort((a, b) => {
-            // Вычисляем параметр t вдоль линии для каждой точки пересечения
             const dx = lineEnd.x - lineStart.x;
             const dy = lineEnd.y - lineStart.y;
 
-            // Для a
             const t_a = dx !== 0 ?
                 (a.point.x - lineStart.x) / dx :
                 (a.point.y - lineStart.y) / dy;
 
-            // Для b
             const t_b = dx !== 0 ?
                 (b.point.x - lineStart.x) / dx :
                 (b.point.y - lineStart.y) / dy;
@@ -188,7 +177,6 @@ class CuttingSystem {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        // Проверка наведения на фигуры
         let hoveredShape = null;
         for (const shape of this.shapes) {
             shape.isHovered = shape.containsPoint(x, y);
@@ -201,12 +189,10 @@ class CuttingSystem {
             }
         }
 
-        // Если ни одна фигура не под курсором
         if (!hoveredShape && this.onShapeLeave) {
             this.onShapeLeave();
         }
 
-        // Обновление линии разреза
         if (this.isCutting) {
             this.cutEnd = new Point(x, y);
             this.cutLine.end = this.cutEnd;
@@ -223,17 +209,14 @@ class CuttingSystem {
         this.cutEnd = new Point(x, y);
         this.isCutting = false;
 
-        // Выполняем разрез
         this.performCut();
 
-        // Сбрасываем линию разреза
         setTimeout(() => {
             this.cutLine = null;
         }, 300);
     }
 
     onMouseLeave() {
-        // Сбрасываем hover состояние всех фигур
         for (const shape of this.shapes) {
             shape.isHovered = false;
         }
@@ -242,7 +225,6 @@ class CuttingSystem {
             this.onShapeLeave();
         }
 
-        // Отменяем разрез, если мышь вышла за пределы канваса
         if (this.isCutting) {
             this.isCutting = false;
             this.cutLine = null;
@@ -344,9 +326,8 @@ class CuttingSystem {
             const dx = this.cutEnd.x - this.cutStart.x;
             const dy = this.cutEnd.y - this.cutStart.y;
             const cutLength = Math.sqrt(dx * dx + dy * dy);
-            const velocity = Math.min(2, cutLength / 50); // Нормализуем
+            const velocity = Math.min(2, cutLength / 50);
 
-            // Воспроизводим звук разреза
             if (window.audioManager) {
                 window.audioManager.playCutSound(velocity);
             }
@@ -382,7 +363,6 @@ class CuttingSystem {
         this.ctx.stroke();
         this.ctx.setLineDash([]);
 
-        // Точки начала и конца
         this.ctx.fillStyle = '#ff3333';
         this.ctx.beginPath();
         this.ctx.arc(start.x, start.y, 6, 0, Math.PI * 2);
@@ -394,22 +374,17 @@ class CuttingSystem {
     }
 
     animate() {
-        // Очищаем канвас
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Рисуем фон
         this.ctx.fillStyle = '#f8f9fa';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Рисуем все фигуры
         for (const shape of this.shapes) {
             shape.draw(this.ctx);
         }
 
-        // Рисуем линию разреза
         this.drawCutLine();
 
-        // Запрашиваем следующий кадр
         requestAnimationFrame(() => this.animate());
     }
 

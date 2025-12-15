@@ -8,7 +8,6 @@ class AudioManager {
     }
 
     loadSounds() {
-        // Список звуков для загрузки
         const soundFiles = {
             'cut': 'sounds/cut.mp3',
             'click': 'sounds/click.mp3',
@@ -17,7 +16,6 @@ class AudioManager {
             'levelComplete': 'sounds/level-complete.mp3'
         };
 
-        // Загружаем каждый звук
         for (const [name, path] of Object.entries(soundFiles)) {
             this.sounds[name] = new Audio(path);
             this.sounds[name].volume = this.volume;
@@ -27,7 +25,6 @@ class AudioManager {
     play(name) {
         if (this.muted || !this.sounds[name]) return;
 
-        // Клонируем звук для возможности одновременного воспроизведения
         const sound = this.sounds[name].cloneNode();
         sound.volume = this.volume;
         sound.play().catch(e => console.log(`Could not play sound ${name}:`, e));
@@ -66,6 +63,5 @@ class AudioManager {
     }
 }
 
-// Создаем глобальный экземпляр
 window.audioManager = new AudioManager();
 window.audioManager.loadSettings();

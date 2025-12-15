@@ -1,66 +1,54 @@
 class Flag {
     constructor(x, y, color, team = 1) {
-        this.x = x;          // X координата точки идентификации (ножка флага)
-        this.y = y;          // Y координата точки идентификации (ножка флага)
+        this.x = x;
+        this.y = y;
         this.color = color;
-        this.team = team;    // 1 - синие, 2 - красные, 3+ - другие команды
-        this.height = 40;    // Высота всего флага (от точки идентификации до верха)
-        this.flagWidth = 30; // Ширина флажка
-        this.poleWidth = 4;  // Ширина древка
-        this.poleHeight = 35; // Высота древка
+        this.team = team;
+        this.height = 40;
+        this.flagWidth = 30;
+        this.poleWidth = 4;
+        this.poleHeight = 35;
         this.isDragging = false;
     }
 
     draw(ctx) {
-        // Сохраняем контекст
         ctx.save();
 
-        // Перемещаем к точке идентификации (ножке флага)
         ctx.translate(this.x, this.y);
 
-        // 1. Рисуем древко флага (идёт ВВЕРХ от точки)
-        ctx.fillStyle = '#8B4513'; // Коричневый цвет древка
+        ctx.fillStyle = '#8B4513';
 
-        // Древко - вертикальная линия вверх
         const poleX = -this.poleWidth / 2;
-        const poleY = -this.poleHeight; // Отрицательное значение - рисуем вверх
+        const poleY = -this.poleHeight;
         ctx.fillRect(poleX, poleY, this.poleWidth, this.poleHeight);
 
-        // 2. Рисуем флажок (треугольник) на вершине древка
         ctx.fillStyle = this.color;
         ctx.beginPath();
 
-        // Вершина флажка (верхняя точка древка)
         const flagTopX = 0;
         const flagTopY = -this.poleHeight;
 
-        // Точки треугольника флажка
-        ctx.moveTo(flagTopX, flagTopY); // Верх древка
-        ctx.lineTo(flagTopX + this.flagWidth, flagTopY + this.flagWidth / 2); // Правая точка
-        ctx.lineTo(flagTopX, flagTopY + this.flagWidth); // Нижняя точка
+        ctx.moveTo(flagTopX, flagTopY);
+        ctx.lineTo(flagTopX + this.flagWidth, flagTopY + this.flagWidth / 2);
+        ctx.lineTo(flagTopX, flagTopY + this.flagWidth);
         ctx.closePath();
         ctx.fill();
 
-        // 3. Основание (точка идентификации) - рисуем в исходной точке (0,0)
         ctx.fillStyle = '#000';
         ctx.beginPath();
-        ctx.arc(0, 0, 4, 0, Math.PI * 2); // Чуть больше точка для лучшей видимости
+        ctx.arc(0, 0, 4, 0, Math.PI * 2);
         ctx.fill();
 
-        // 4. Декоративное утолщение в основании флага
-        ctx.fillStyle = '#5D4037'; // Тёмно-коричневый
+        ctx.fillStyle = '#5D4037';
         ctx.beginPath();
         ctx.arc(0, 0, 6, 0, Math.PI * 2);
         ctx.fill();
 
-        // 5. Небольшая тень/обводка для лучшей видимости
         ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
         ctx.lineWidth = 1;
 
-        // Обводка древка
         ctx.strokeRect(poleX, poleY, this.poleWidth, this.poleHeight);
 
-        // Обводка флажка
         ctx.beginPath();
         ctx.moveTo(flagTopX, flagTopY);
         ctx.lineTo(flagTopX + this.flagWidth, flagTopY + this.flagWidth / 2);
@@ -68,22 +56,17 @@ class Flag {
         ctx.closePath();
         ctx.stroke();
 
-        // Восстанавливаем контекст
         ctx.restore();
     }
 
     containsPoint(x, y) {
-        // Проверяем, находится ли точка в пределах флага
-        // Учитываем и флажок, и древко, и точку идентификации
         const dx = x - this.x;
         const dy = y - this.y;
 
-        // Проверяем точку идентификации (радиус 6px)
-        if (dx * dx + dy * dy < 36) { // 6^2 = 36
+        if (dx * dx + dy * dy < 36) {
             return true;
         }
 
-        // Проверяем древко (прямоугольник от точки идентификации вверх)
         const poleX = this.x - this.poleWidth / 2;
         const poleY = this.y - this.poleHeight;
         const poleWidth = this.poleWidth;
@@ -94,11 +77,9 @@ class Flag {
             return true;
         }
 
-        // Проверяем флажок (треугольник)
         const flagTopX = this.x;
         const flagTopY = this.y - this.poleHeight;
 
-        // Используем barycentric coordinates для проверки точки в треугольнике
         const v0 = [flagTopX + this.flagWidth - flagTopX, (flagTopY + this.flagWidth / 2) - flagTopY];
         const v1 = [flagTopX - flagTopX, (flagTopY + this.flagWidth) - flagTopY];
         const v2 = [x - flagTopX, y - flagTopY];
@@ -136,9 +117,8 @@ class FlagSystem {
     addRandomFlag(shape, teamId = null) {
         const team = teamId ?
             this.teams.find(t => t.id === teamId) :
-            this.teams[Math.floor(Math.random() * 2)]; // По умолчанию только синие/красные
+            this.teams[Math.floor(Math.random() * 2)];
 
-        // Генерируем случайную точку внутри фигуры
         const point = this.getRandomPointInShape(shape);
         if (point) {
             const flag = new Flag(point.x, point.y, team.color, team.id);
@@ -149,23 +129,17 @@ class FlagSystem {
     }
 
     getRandomPointInShape(shape) {
-        // Используем rejection sampling для нахождения случайной точки внутри фигуры
         const bounds = this.getShapeBounds(shape);
         let attempts = 0;
         const maxAttempts = 1000;
 
-        // Получаем высоту флага для учёта при размещении
-        const flagHeight = 40; // Примерная высота флага
+        const flagHeight = 40;
 
         while (attempts < maxAttempts) {
-            // Генерируем точку с учётом того, что флаг рисуется вверх
-            // Нам нужно, чтобы вся высота флага помещалась в фигуре
             const x = bounds.minX + Math.random() * (bounds.maxX - bounds.minX);
             const y = bounds.minY + flagHeight + Math.random() * (bounds.maxY - bounds.minY - flagHeight);
 
-            // Проверяем, что точка идентификации и область выше неё внутри фигуры
             if (shape.containsPoint(x, y)) {
-                // Дополнительно проверяем несколько точек выше (по древку)
                 const testPoints = [
                     {x: x, y: y - flagHeight * 0.25},
                     {x: x, y: y - flagHeight * 0.5},
@@ -187,7 +161,6 @@ class FlagSystem {
             attempts++;
         }
 
-        // Если не нашли подходящую точку, возвращаем просто центр
         const center = shape.center;
         return new Point(center.x, center.y);
     }
@@ -216,28 +189,23 @@ class FlagSystem {
         }
     }
 
-    // Получить флаги по команде
     getFlagsByTeam(teamId) {
         return this.flags.filter(flag => flag.team === teamId);
     }
 
-    // Получить флаги внутри фигуры
     getFlagsInShape(shape) {
         return this.flags.filter(flag => shape.containsPoint(flag.x, flag.y));
     }
 
-    // Проверить, есть ли конфликты в фигуре
     checkShapeForConflicts(shape) {
         const flagsInShape = this.getFlagsInShape(shape);
-        if (flagsInShape.length <= 1) return null; // Нет конфликтов
+        if (flagsInShape.length <= 1) return null;
 
-        // Собираем ID команд в фигуре
         const teamsInShape = new Set();
         for (const flag of flagsInShape) {
             teamsInShape.add(flag.team);
         }
 
-        // Если больше одной команды - конфликт
         if (teamsInShape.size > 1) {
             return {
                 shape: shape,
@@ -247,6 +215,6 @@ class FlagSystem {
             };
         }
 
-        return null; // Все флаги одной команды - конфликта нет
+        return null;
     }
 }
