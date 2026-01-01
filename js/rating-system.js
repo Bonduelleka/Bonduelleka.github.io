@@ -7,7 +7,8 @@ class RatingSystem {
     initStorage() {
         if (!localStorage.getItem(this.storageKey)) {
             const defaultRatings = {
-                'cut': this.generateSampleRatings()
+                'cut': this.generateSampleRatings(),
+                'friend-foe': this.generateSampleRatings()
             };
             localStorage.setItem(this.storageKey, JSON.stringify(defaultRatings));
         }
@@ -41,17 +42,32 @@ class RatingSystem {
     saveRating(mode, nickname, score) {
         try {
             const ratings = JSON.parse(localStorage.getItem(this.storageKey)) || {};
+
             if (!ratings[mode]) {
                 ratings[mode] = [];
             }
 
-            ratings[mode].push({
-                nickname: nickname,
-                score: score,
-                date: new Date().toISOString()
-            });
+            const existingIndex = ratings[mode].findIndex(item => item.nickname === nickname);
 
-            ratings[mode].sort((a, b) => b.score - a.score);
+            if (existingIndex !== -1) {
+                if (score > ratings[mode][existingIndex].score) {
+                    ratings[mode][existingIndex].score = score;
+                    ratings[mode][existingIndex].date = new Date().toISOString();
+                }
+            } else {
+                ratings[mode].push({
+                    nickname: nickname,
+                    score: score,
+                    date: new Date().toISOString()
+                });
+            }
+
+            ratings[mode].sort((a, b) => {
+                if (b.score !== a.score) {
+                    return b.score - a.score;
+                }
+                return new Date(b.date) - new Date(a.date);
+            });
 
             ratings[mode] = ratings[mode].slice(0, 10);
 

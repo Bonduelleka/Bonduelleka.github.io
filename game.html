@@ -17,7 +17,6 @@
 </head>
 <body>
     <div class="container game-container">
-        <!-- Верхняя плашка -->
         <div class="game-header">
             <a href="index.html" class="logo" id="backToMenu">
                 <span class="scissors-icon">✂️</span>
@@ -36,17 +35,11 @@
             </div>
         </div>
 
-        <!-- Игровое поле -->
         <div class="game-main">
-            <!-- Левая часть -->
             <div class="game-sidebar left-sidebar">
                 <div class="game-mode-info">
-                    <h2>Режим: <span class="mode-title">Разрежь на части</span></h2>
-                    <div class="mode-description">
-                        <p>Цель: путём деления фигуры заданным количеством разрезов получить требуемое количество частей.</p>
-                        <p>Управление: зажмите ЛКМ и проведите линию через фигуру для разреза.</p>
-                        <p>Каждый пройденный уровень даёт +30 секунд времени.</p>
-                    </div>
+                    <h2>Режим: <span class="mode-title"></span></h2>
+                    <div class="mode-description"></div>
                 </div>
                 <div class="keyboard-hints">
                     <h3>Управление</h3>
@@ -65,12 +58,10 @@
                 </div>
             </div>
 
-            <!-- канвас -->
             <div class="game-center">
                 <canvas id="gameCanvas" width="800" height="600"></canvas>
             </div>
 
-            <!-- Правая часть -->
             <div class="game-sidebar right-sidebar">
                 <div class="game-task">
                     <h2>Задание</h2>
@@ -81,7 +72,6 @@
             </div>
         </div>
 
-        <!-- Оверлей для завершения игры -->
         <div id="gameOverlay" class="overlay">
             <div class="overlay-content">
                 <h2 id="gameResultTitle">Игра завершена!</h2>
@@ -109,10 +99,11 @@
     <script src="js/ui-manager.js"></script>
     <script src="js/game-manager.js"></script>
     <script src="js/audio-manager.js"></script>
+    <script src="js/modes/admin-cut-mode.js"></script>
+    <script src="js/modes/admin-friend-foe-mode.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Проверяем никнейм
             const nickname = localStorage.getItem('game_nickname');
             const gameMode = localStorage.getItem('game_mode');
 
@@ -122,13 +113,10 @@
                 return;
             }
 
-            // Инициализируем UI
             window.uiManager = new UIManager();
 
-            // Инициализируем менеджер игры
             window.gameManager = new GameManager();
 
-            // Запускаем выбранный режим
             window.gameManager.startGame(gameMode);
         });
     </script>

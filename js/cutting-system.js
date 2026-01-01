@@ -3,14 +3,6 @@ class Point {
         this.x = x;
         this.y = y;
     }
-
-    distanceTo(other) {
-        return Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
-    }
-
-    equals(other, epsilon = 0.001) {
-        return Math.abs(this.x - other.x) < epsilon && Math.abs(this.y - other.y) < epsilon;
-    }
 }
 
 class Shape {
@@ -71,32 +63,6 @@ class Shape {
         return inside;
     }
 
-    get center() {
-        const sum = this.points.reduce((acc, p) => {
-            acc.x += p.x;
-            acc.y += p.y;
-            return acc;
-        }, { x: 0, y: 0 });
-
-        return new Point(
-            sum.x / this.points.length,
-            sum.y / this.points.length
-        );
-    }
-
-    get area() {
-        let area = 0;
-        const n = this.points.length;
-
-        for (let i = 0; i < n; i++) {
-            const j = (i + 1) % n;
-            area += this.points[i].x * this.points[j].y;
-            area -= this.points[j].x * this.points[i].y;
-        }
-
-        return Math.abs(area) / 2;
-    }
-
     static lineIntersection(p1, p2, p3, p4) {
         const denominator = (p4.y - p3.y) * (p2.x - p1.x) - (p4.x - p3.x) * (p2.y - p1.y);
 
@@ -113,23 +79,6 @@ class Shape {
         }
 
         return null;
-    }
-
-    static sortIntersectionsAlongLine(intersections, lineStart, lineEnd) {
-        return intersections.sort((a, b) => {
-            const dx = lineEnd.x - lineStart.x;
-            const dy = lineEnd.y - lineStart.y;
-
-            const t_a = dx !== 0 ?
-                (a.point.x - lineStart.x) / dx :
-                (a.point.y - lineStart.y) / dy;
-
-            const t_b = dx !== 0 ?
-                (b.point.x - lineStart.x) / dx :
-                (b.point.y - lineStart.y) / dy;
-
-            return t_a - t_b;
-        });
     }
 }
 

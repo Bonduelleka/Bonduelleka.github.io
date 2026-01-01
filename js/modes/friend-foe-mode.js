@@ -1,4 +1,7 @@
 class FriendFoeMode extends GameMode {
+
+    static name = 'Свой-чужой';
+    static description = 'Раздели фигуру так, чтобы флаги разных команд не оказались на одной части';
     constructor() {
         super(
             'Свой-чужой',
@@ -13,12 +16,12 @@ class FriendFoeMode extends GameMode {
             score: 0,
             cutsMade: 0,
             maxCuts: 5,
-            targetTeams: 2, // Количество команд на уровне
+            targetTeams: 2,
             currentConflicts: 0,
             isComplete: false,
             timeLeft: 300
         };
-        this.conflictShapes = new Set(); // ID фигур с конфликтами
+        this.conflictShapes = new Set();
         this.initialShape = null;
         this.initialFlags = null;
     }
@@ -26,57 +29,51 @@ class FriendFoeMode extends GameMode {
     init(canvas, width, height) {
         super.init(canvas);
 
+        window.uiManager.setModeInfo(this.name, this.description);
+
         this.cuttingSystem = new CuttingSystem(canvas);
         this.shapeGenerator = new ShapeGenerator(width, height);
         this.flagSystem = new FlagSystem();
 
-        // Настраиваем колбэки
         this.cuttingSystem.setOnCutCallback(this.onCutMade.bind(this));
         this.cuttingSystem.setOnShapeHover(this.onShapeHover.bind(this));
         this.cuttingSystem.setOnShapeLeave(this.onShapeLeave.bind(this));
 
-        // Начинаем уровень
         this.startLevel();
 
-        // Запускаем собственную анимацию для отрисовки флагов
         this.animate();
+    }
+
+    start()
+    {
+        console.log('Запускаем режим Свой чужой');
     }
 
     startLevel() {
         console.log(`Starting Friend-Foe mode level ${this.gameState.level}`);
 
-        // Очищаем системы
         this.cuttingSystem.clear();
         this.flagSystem.clear();
         this.conflictShapes.clear();
 
-        // Сбрасываем счётчики
         this.gameState.cutsMade = 0;
         this.gameState.currentConflicts = 0;
         this.gameState.isComplete = false;
 
-        // Генерация параметров
         this.generateLevelParameters();
 
-        // Генерация фигуры
         const shape = this.shapeGenerator.generateRandomShape(Math.min(this.gameState.level, 3));
 
-        // СОХРАНЯЕМ КОПИЮ фигуры для восстановления
         this.initialShape = this.cloneShape(shape);
 
-        // Устанавливаем фигуру
         this.cuttingSystem.setShapes([shape]);
 
-        // Добавляем флаги
         this.addFlagsToShape(shape);
 
-        // СОХРАНЯЕМ КОПИЮ флагов
         this.initialFlags = this.cloneFlags(this.flagSystem.flags);
 
-        // Проверяем начальное состояние
         this.updateConflicts();
 
-        // Обновляем UI
         this.updateUI();
     }
 
@@ -102,24 +99,29 @@ class FriendFoeMode extends GameMode {
     }
 
     generateLevelParameters() {
-        // Базовые параметры
         const baseCuts = 5;
         const baseTeams = 2;
 
-        // Увеличиваем сложность с уровнем
-        this.gameState.maxCuts = Math.max(2, baseCuts - Math.floor(this.gameState.level / 2));
-        this.gameState.targetTeams = Math.min(4, baseTeams + Math.floor((this.gameState.level - 1) / 3));
+        switch (this.gameState.level)
+        {
+            case 1:
+                this.gameState.maxCuts = Math.max(2, baseCuts - Math.floor(this.gameState.level / 2));
+                this.gameState.targetTeams = 2;
+                break;
+            case 2:
+                this.gameState.maxCuts = Math.max(2, baseCuts - Math.floor(this.gameState.level / 2));
+                this.gameState.targetTeams = 3;
+                break;
+        }
     }
 
     addFlagsToShape(shape) {
-        // Количество флагов зависит от уровня и количества команд
         const minFlags = 3 + this.gameState.level;
         const maxFlags = 6 + this.gameState.level * 2;
         const numFlags = Math.floor(Math.random() * (maxFlags - minFlags + 1)) + minFlags;
 
         console.log(`Adding ${numFlags} flags for ${this.gameState.targetTeams} teams`);
 
-        // Распределяем флаги по командам
         const flagsPerTeam = Math.ceil(numFlags / this.gameState.targetTeams);
 
         for (let teamId = 1; teamId <= this.gameState.targetTeams; teamId++) {
@@ -130,7 +132,6 @@ class FriendFoeMode extends GameMode {
             }
         }
 
-        // Перемешиваем флаги для случайного распределения
         this.flagSystem.flags.sort(() => Math.random() - 0.5);
     }
 
@@ -139,13 +140,10 @@ class FriendFoeMode extends GameMode {
 
         this.gameState.cutsMade++;
 
-        // Обновляем проверку конфликтов после разреза
         this.updateConflicts();
 
-        // Проверяем завершение уровня
         this.checkLevelCompletion();
 
-        // Обновляем UI
         this.updateUI();
     }
 
@@ -153,14 +151,12 @@ class FriendFoeMode extends GameMode {
         this.conflictShapes.clear();
         this.gameState.currentConflicts = 0;
 
-        // Проверяем все фигуры на конфликты
         for (const shape of this.cuttingSystem.shapes) {
             const conflict = this.flagSystem.checkShapeForConflicts(shape);
             if (conflict && conflict.isConflict) {
                 this.conflictShapes.add(shape.id);
                 this.gameState.currentConflicts++;
 
-                // Подсвечиваем конфликтные фигуры
                 shape.hasConflict = true;
                 shape.conflictTeams = conflict.teams;
             } else {

@@ -15,31 +15,16 @@
             <span class="scissors-icon">✂️</span>
         </a>
 
-        <!-- Центральный блок -->
         <div class="menu-center">
             <div class="menu-card">
-                <!-- Левая часть -->
                 <div class="menu-left">
                     <h1 class="game-title">Разрежь фигуру</h1>
 
                     <div class="mode-selection">
-                        <h2>Выберите режим</h2>
-                        <div class="mode-buttons">
-                            <button class="mode-btn active" data-mode="cut">
-                                <span class="mode-icon">✂️</span>
-                                <span class="mode-name">Разрежь на части</span>
-                                <span class="mode-desc">Раздели фигуру на заданное количество частей за ограниченное число разрезов</span>
-                            </button>
-                            <button class="mode-btn" data-mode="friend-foe">
-                                <span class="mode-icon">🏴‍☠️</span>
-                                <span class="mode-name">Свой-чужой</span>
-                                <span class="mode-desc">Раздели фигуру так, чтобы флаги разных команд не оказались вместе</span>
-                            </button>
-                        </div>
+                        <div class="mode-buttons"> </div>
                     </div>
                 </div>
 
-                <!-- Правая часть -->
                 <div class="menu-right">
                     <div class="player-section">
                         <h2>Ваш никнейм</h2>
@@ -86,5 +71,12 @@
     <script src="js/main.js"></script>
     <script src="js/rating-system.js"></script>
     <script src="js/audio-manager.js"></script>
+    <script src="js/modes/base-mode.js"></script>
+    <script src="js/modes/cut-mode.js"></script>
+    <script src="js/modes/admin-cut-mode.js"></script>
+    <script src="js/modes/friend-foe-mode.js"></script>
+    <script src="js/modes/admin-friend-foe-mode.js"></script>
+
+
 </body>
 </html>

@@ -58,14 +58,7 @@ class ShapeGenerator {
     generateLevel3Shape() {
         const sides = 7 + Math.floor(Math.random() * 4);
         const radius = 140 + Math.random() * 70;
-
-        if (Math.random() > 0.5) {
-            return this.generateStarShape(sides, radius);
-        } else {
-            const shape = this.generateRegularPolygon(sides, radius);
-            this.deformShape(shape, 25);
-            return shape;
-        }
+        return this.generateStarShape(sides, radius);
     }
 
     generateStarShape(points, outerRadius, innerRadiusRatio = 0.5) {
@@ -89,13 +82,5 @@ class ShapeGenerator {
             shape.points[i].x += (Math.random() - 0.5) * maxDeformation * 2;
             shape.points[i].y += (Math.random() - 0.5) * maxDeformation * 2;
         }
-    }
-
-    generateTutorialShapes() {
-        return [
-            this.generateRegularPolygon(3, 80, -150, 0),
-            this.generateRegularPolygon(4, 80, 0, 0),
-            this.generateRegularPolygon(5, 80, 150, 0)
-        ];
     }
 }

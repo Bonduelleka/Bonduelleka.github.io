@@ -10,7 +10,7 @@ class GameManager {
         this.currentMode = null;
         this.modes = {};
         this.timer = null;
-        this.timeLeft = 40;
+        this.timeLeft = 100;
 
         this.setupCanvas();
 
@@ -129,7 +129,12 @@ class GameManager {
     registerModes() {
         this.modes = {
             'cut': CutMode,
-            'friend-foe': FriendFoeMode
+            'friend-foe': FriendFoeMode,
+            'cut-easy': EasyCutMode,
+            'cut-hard': HardCutMode,
+            'cut-extreme': ExtremeCutMode,
+            'friend-foe-easy': EasyFlagMode,
+            'friend-foe-hard': HardFlagMode
         };
     }
 
@@ -147,6 +152,7 @@ class GameManager {
         }
 
         this.currentMode = new ModeClass();
+
         this.currentMode.init(this.canvas, this.canvas.width, this.canvas.height);
         this.currentMode.start();
 
@@ -154,6 +160,7 @@ class GameManager {
     }
 
     startTimer() {
+        console.log('Ставим таймер');
         clearInterval(this.timer);
 
         this.timer = setInterval(() => {

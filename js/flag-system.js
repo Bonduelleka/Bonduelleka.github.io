@@ -9,15 +9,46 @@ class Flag {
         this.poleWidth = 4;
         this.poleHeight = 35;
         this.isDragging = false;
+
+        this.wavePhase = Math.random() * Math.PI * 2;
+        this.waveSpeed = 0.1 + Math.random() * 0.05;
+        this.waveAmplitude = 3;
+        this.waveFrequency = 0.3;
+        this.windStrength = 0.5 + Math.random() * 0.5;
+
+        this.targetX = x;
+        this.targetY = y;
+        this.moveSpeed = 0.2;
+
+        this.clickAnimation = 0;
+        this.clickAnimationSpeed = 0.3;
+    }
+
+    update() {
+        this.wavePhase += this.waveSpeed;
+
+        if (Math.abs(this.x - this.targetX) > 0.1 || Math.abs(this.y - this.targetY) > 0.1) {
+            this.x += (this.targetX - this.x) * this.moveSpeed;
+            this.y += (this.targetY - this.y) * this.moveSpeed;
+        }
+        if (this.clickAnimation > 0) {
+            this.clickAnimation = Math.max(0, this.clickAnimation - this.clickAnimationSpeed);
+        }
     }
 
     draw(ctx) {
         ctx.save();
 
+        if (this.clickAnimation > 0) {
+            const scale = 1 + this.clickAnimation * 0.1;
+            ctx.translate(this.x, this.y);
+            ctx.scale(scale, scale);
+            ctx.translate(-this.x, -this.y);
+        }
+
         ctx.translate(this.x, this.y);
 
         ctx.fillStyle = '#8B4513';
-
         const poleX = -this.poleWidth / 2;
         const poleY = -this.poleHeight;
         ctx.fillRect(poleX, poleY, this.poleWidth, this.poleHeight);
@@ -29,10 +60,29 @@ class Flag {
         const flagTopY = -this.poleHeight;
 
         ctx.moveTo(flagTopX, flagTopY);
-        ctx.lineTo(flagTopX + this.flagWidth, flagTopY + this.flagWidth / 2);
+
+        const segments = 10;
+        for (let i = 0; i <= segments; i++) {
+            const t = i / segments;
+            const x = flagTopX + this.flagWidth * t;
+
+            const wave = Math.sin(t * Math.PI * this.waveFrequency + this.wavePhase) *
+                        this.waveAmplitude * t * this.windStrength;
+
+            const y = flagTopY + this.flagWidth * t / 2 + wave;
+
+            if (i === 0) {
+                ctx.lineTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+        }
+
         ctx.lineTo(flagTopX, flagTopY + this.flagWidth);
         ctx.closePath();
         ctx.fill();
+
+        this.drawFlagDetails(ctx, flagTopX, flagTopY);
 
         ctx.fillStyle = '#000';
         ctx.beginPath();
@@ -51,10 +101,79 @@ class Flag {
 
         ctx.beginPath();
         ctx.moveTo(flagTopX, flagTopY);
-        ctx.lineTo(flagTopX + this.flagWidth, flagTopY + this.flagWidth / 2);
+
+        for (let i = 0; i <= segments; i++) {
+            const t = i / segments;
+            const x = flagTopX + this.flagWidth * t;
+            const wave = Math.sin(t * Math.PI * this.waveFrequency + this.wavePhase) *
+                        this.waveAmplitude * t * this.windStrength;
+            const y = flagTopY + this.flagWidth * t / 2 + wave;
+
+            if (i === 0) {
+                ctx.lineTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+        }
+
         ctx.lineTo(flagTopX, flagTopY + this.flagWidth);
         ctx.closePath();
         ctx.stroke();
+
+        this.drawShadow(ctx, flagTopX, flagTopY);
+
+        ctx.restore();
+    }
+
+    drawFlagDetails(ctx, flagTopX, flagTopY) {
+        ctx.save();
+
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(flagTopX + this.flagWidth * 0.2, flagTopY + this.flagWidth * 0.2);
+        ctx.lineTo(flagTopX + this.flagWidth * 0.8, flagTopY + this.flagWidth * 0.8);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(flagTopX + this.flagWidth * 0.8, flagTopY + this.flagWidth * 0.2);
+        ctx.lineTo(flagTopX + this.flagWidth * 0.2, flagTopY + this.flagWidth * 0.8);
+        ctx.stroke();
+
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+        const centerX = flagTopX + this.flagWidth * 0.5;
+        const centerY = flagTopY + this.flagWidth * 0.5;
+        const starSize = 4;
+
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY - starSize);
+        ctx.lineTo(centerX + starSize * 0.8, centerY + starSize * 0.6);
+        ctx.lineTo(centerX - starSize * 0.8, centerY + starSize * 0.6);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY + starSize);
+        ctx.lineTo(centerX + starSize * 0.8, centerY - starSize * 0.6);
+        ctx.lineTo(centerX - starSize * 0.8, centerY - starSize * 0.6);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.restore();
+    }
+
+    drawShadow(ctx, flagTopX, flagTopY) {
+        ctx.save();
+        ctx.globalAlpha = 0.1;
+        ctx.fillStyle = '#000';
+
+        ctx.beginPath();
+        const shadowOffset = 2;
+        ctx.moveTo(flagTopX + shadowOffset, flagTopY + shadowOffset);
+        ctx.lineTo(flagTopX + this.flagWidth + shadowOffset, flagTopY + this.flagWidth / 2 + shadowOffset);
+        ctx.lineTo(flagTopX + shadowOffset, flagTopY + this.flagWidth + shadowOffset);
+        ctx.closePath();
+        ctx.fill();
 
         ctx.restore();
     }
@@ -97,9 +216,8 @@ class Flag {
         return (u >= 0) && (v >= 0) && (u + v < 1);
     }
 
-    moveTo(x, y) {
-        this.x = x;
-        this.y = y;
+    setWindStrength(strength) {
+        this.windStrength = Math.max(0.3, Math.min(1.5, strength));
     }
 }
 
@@ -109,9 +227,28 @@ class FlagSystem {
         this.teams = [
             { id: 1, name: 'Синие', color: '#3B82F6' },
             { id: 2, name: 'Красные', color: '#EF4444' },
-            { id: 3, name: 'Зелёные', color: '#10B981' },
-            { id: 4, name: 'Жёлтые', color: '#F59E0B' }
+            { id: 3, name: 'Зелёные', color: '#10B981' }
         ];
+        this.globalWind = 0.8;
+        this.windDirection = 1;
+        this.windChangeTimer = 0;
+    }
+
+    update() {
+        for (const flag of this.flags) {
+            flag.update();
+
+            flag.setWindStrength(this.globalWind * (0.8 + Math.random() * 0.4));
+
+            flag.waveSpeed = 0.08 + Math.random() * 0.04;
+        }
+
+        this.windChangeTimer++;
+        if (this.windChangeTimer > 300) {
+            this.globalWind = 0.5 + Math.random() * 1.0;
+            this.windDirection = Math.random() > 0.5 ? 1 : -1;
+            this.windChangeTimer = 0;
+        }
     }
 
     addRandomFlag(shape, teamId = null) {
@@ -184,6 +321,8 @@ class FlagSystem {
     }
 
     draw(ctx) {
+        this.update();
+
         for (const flag of this.flags) {
             flag.draw(ctx);
         }

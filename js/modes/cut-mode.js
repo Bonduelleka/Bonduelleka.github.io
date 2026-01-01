@@ -1,4 +1,8 @@
 class CutMode extends GameMode {
+
+    static name = 'Разрежь на части';
+    static description = 'Раздели фигуру на заданное количество частей за ограниченное число разрезов';
+
     constructor() {
         super(
             'Разрежь на части', 
@@ -27,6 +31,8 @@ class CutMode extends GameMode {
 
         this.cuttingSystem.setOnCutCallback(this.onCutMade.bind(this));
 
+        window.uiManager.setModeInfo(this.name, this.description);
+
         this.startLevel();
     }
 
@@ -41,7 +47,7 @@ class CutMode extends GameMode {
 
         this.generateLevelParameters();
 
-        const shape = this.shapeGenerator.generateRandomShape(this.gameState.level);
+        const shape = this.shapeGenerator.generateRandomShape(this.gameState.level / 4);
         this.cuttingSystem.setShapes([shape]);
 
         if (window.uiManager) {
@@ -61,8 +67,22 @@ class CutMode extends GameMode {
     }
 
     generateLevelParameters() {
-        this.gameState.targetPieces = Math.floor(3 + this.gameState.level * 1.5);
-        this.gameState.maxCuts = Math.max(2, 5 - Math.floor(this.gameState.level / 2));
+        switch(this.gameState.level / 4)
+        {
+            case 1:
+                this.gameState.targetPieces = 4;
+                this.gameState.maxCuts = 3;
+                break;
+            case 2:
+                this.gameState.targetPieces = 6;
+                this.gameState.maxCuts = 4;
+                break;
+            case 3:
+                this.gameState.targetPieces = 10;
+                this.gameState.maxCuts = 4;
+                break;
+        }
+
     }
 
     onCutMade(newShapeCount) {
@@ -79,7 +99,7 @@ class CutMode extends GameMode {
             parts: {
                 label: 'Части:',
                 value: `${this.gameState.currentPieces}/${this.gameState.targetPieces}`,
-                type: 'cuts'
+                type: 'parts'
             },
             cuts: {
                 label: 'Разрезы:',
@@ -87,6 +107,10 @@ class CutMode extends GameMode {
                 type: 'cuts'
             }
         });
+
+        if (window.uiManager.elements.level) {
+            window.uiManager.elements.level.textContent = `Уровень ${this.gameState.level / 4}`;
+        }
     }
 
     completeLevel() {
@@ -94,7 +118,7 @@ class CutMode extends GameMode {
         this.gameState.score += 100;
 
         if (window.uiManager) {
-            window.uiManager.showMessage(`Уровень ${this.gameState.level-1} пройден!`);
+            window.uiManager.showMessage(`Этап ${this.gameState.level} пройден!`);
         }
 
         setTimeout(() => this.startLevel(), 1500);

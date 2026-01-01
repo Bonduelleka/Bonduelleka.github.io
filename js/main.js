@@ -4,6 +4,16 @@ class MainMenu {
         this.nickname = localStorage.getItem('game_nickname') || '';
         this.ratingSystem = new RatingSystem();
 
+        this.modes = {
+            'cut': CutMode,
+            'friend-foe': FriendFoeMode,
+            'cut-easy': EasyCutMode,
+            'cut-hard': HardCutMode,
+            'cut-extreme': ExtremeCutMode,
+            'friend-foe-easy': EasyFlagMode,
+            'friend-foe-hard': HardFlagMode
+        };
+
         this.init();
     }
 
@@ -11,6 +21,7 @@ class MainMenu {
         this.bindEvents();
         this.loadRating();
         this.updateUI();
+        this.createModeButtons();
     }
 
     bindEvents() {
@@ -40,6 +51,68 @@ class MainMenu {
         });
     }
 
+
+    createModeButtons() {
+        const modeButtons = document.querySelector('.mode-buttons');
+        if (!modeButtons || !this.modes) {
+            console.error('Элемент .mode-buttons не найден или gameManager не загружен');
+            return;
+        }
+        modeButtons.innerHTML = '<h2>Выберите режим</h2>';
+
+        Object.entries(this.modes).forEach(([modeId, modeClass]) => {
+            this.createModeButton(modeButtons, modeId, modeClass);
+        });
+
+        this.bindModeButtonsEvents();
+    }
+
+    createModeButton(container, modeId, ModeClass) {
+        const button = document.createElement('button');
+        button.className = 'mode-btn';
+        button.dataset.mode = modeId;
+
+        let icon = '🎮';
+
+        if (modeId.toLowerCase().includes('cut')) {
+            icon = '✂️';
+        } else if (modeId.toLowerCase().includes('friend')) {
+            icon = '🏴‍☠️';
+        }
+
+        let modeName = 'Неизвестный режим';
+        let modeDesc = 'Описание отсутствует';
+
+        try {
+            const tempInstance = new ModeClass();
+            modeName = tempInstance.name || modeName;
+            modeDesc = tempInstance.description || modeDesc;
+        } catch (error) {
+            console.warn(`Не удалось создать экземпляр для режима ${modeId}:`, error);
+        }
+
+        if (modeId === this.currentMode) {
+            button.classList.add('active');
+        }
+
+        button.innerHTML = `
+            <span class="mode-icon">${icon}</span>
+            <span class="mode-name">${modeName}</span>
+            <span class="mode-desc">${modeDesc}</span>
+        `;
+
+        container.appendChild(button);
+    }
+
+    bindModeButtonsEvents() {
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.audioManager) window.audioManager.play('click');
+                this.selectMode(btn.dataset.mode);
+            });
+        });
+    }
+
     selectMode(mode) {
         if (mode === 'coming-soon') return;
 
@@ -49,24 +122,27 @@ class MainMenu {
             btn.classList.toggle('active', btn.dataset.mode === mode);
         });
 
-        const modeNames = {
-            'cut': 'Разрежь на части',
-            'future': 'Будущий режим'
-        };
+        let modeName = 'Неизвестный режим';
 
-        document.getElementById('ratingMode').textContent = modeNames[mode] || mode;
-        document.querySelector('.selected-mode').textContent = `(${modeNames[mode] || mode})`;
+        try {
+            const tempInstance = new this.modes[mode]();
+            modeName = tempInstance.name || modeName;
+        } catch (error) {
+            console.warn(`Не удалось создать экземпляр для режима ${mode}:`, error);
+        }
+
+        document.getElementById('ratingMode').textContent = modeName || mode;
+        document.querySelector('.selected-mode').textContent = `(${modeName || mode})`;
 
         this.loadRating();
         this.updateStartButton();
     }
 
     getModeName(mode) {
-        const modes = {
-            'cut': 'Разрежь на части',
-            'friend-foe': 'Свой-чужой',
-            'coming-soon': 'Скоро...'
-        };
+        const ModeClass = window.gameManager?.modes[mode];
+        if (ModeClass && ModeClass.name) {
+            return ModeClass.name;
+        }
         return modes[mode] || 'Неизвестный режим';
     }
 

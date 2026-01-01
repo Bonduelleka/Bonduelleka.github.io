@@ -132,7 +132,7 @@ class UIManager {
         const modeDesc = document.querySelector('.mode-description');
 
         if (modeTitle) modeTitle.textContent = name;
-        if (modeDesc) modeDesc.innerHTML = `<p>${description}</p>`;
+        if (modeDesc) modeDesc.innerHTML = `<p>${description}</p><p>Управление: зажмите ЛКМ и проведите линию через фигуру для разреза.</p>`;
     }
 
     showMessage(message, type = 'success') {
