@@ -101,17 +101,15 @@ class FriendFoeMode extends GameMode {
     generateLevelParameters() {
         const baseCuts = 5;
         const baseTeams = 2;
-
-        switch (this.gameState.level)
+        if(this.gameState.level < 5)
         {
-            case 1:
-                this.gameState.maxCuts = Math.max(2, baseCuts - Math.floor(this.gameState.level / 2));
-                this.gameState.targetTeams = 2;
-                break;
-            case 2:
-                this.gameState.maxCuts = Math.max(2, baseCuts - Math.floor(this.gameState.level / 2));
-                this.gameState.targetTeams = 3;
-                break;
+            this.gameState.maxCuts = Math.max(2, baseCuts);
+            this.gameState.targetTeams = 2;
+        }
+        else
+        {
+            this.gameState.maxCuts = Math.max(2, baseCuts - 1);
+            this.gameState.targetTeams = 3;
         }
     }
 
@@ -346,7 +344,14 @@ class FriendFoeMode extends GameMode {
         });
 
         if (window.uiManager.elements.level) {
-            window.uiManager.elements.level.textContent = `Уровень ${this.gameState.level}`;
+            if(this.gameState.level < 5)
+            {
+                window.uiManager.elements.level.textContent = `Уровень 1`;
+            }
+            else
+            {
+                window.uiManager.elements.level.textContent = `Уровень 2`;
+            }
         }
     }
 

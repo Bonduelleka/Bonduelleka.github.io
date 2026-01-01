@@ -151,16 +151,21 @@ class MainMenu {
         const nickname = input.value.trim();
 
         if (!nickname) {
+            this.nickname = '';
             this.showStatus('Введите никнейм', 'error');
             return;
         }
 
         if (nickname.length < 3) {
+
+            this.nickname = '';
             this.showStatus('Никнейм должен быть минимум 3 символа', 'error');
             return;
         }
 
         if (nickname.length > 20) {
+
+            this.nickname = '';
             this.showStatus('Никнейм должен быть не более 20 символов', 'error');
             return;
         }
@@ -199,6 +204,7 @@ class MainMenu {
         if (this.nickname) {
             document.getElementById('nickname').value = this.nickname;
         }
+        this.nickname = '';
         this.updateStartButton();
     }
 

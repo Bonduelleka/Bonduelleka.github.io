@@ -47,7 +47,20 @@ class CutMode extends GameMode {
 
         this.generateLevelParameters();
 
-        const shape = this.shapeGenerator.generateRandomShape(this.gameState.level / 4);
+        let shape;
+
+        if(this.gameState.level < 5)
+        {
+            shape = this.shapeGenerator.generateRandomShape(Math.ceil(1));
+        }
+        else if(this.gameState.level < 9)
+        {
+            shape = this.shapeGenerator.generateRandomShape(Math.ceil(2));
+        }
+        else
+        {
+            shape = this.shapeGenerator.generateRandomShape(Math.ceil(3));
+        }
         this.cuttingSystem.setShapes([shape]);
 
         if (window.uiManager) {
@@ -67,22 +80,21 @@ class CutMode extends GameMode {
     }
 
     generateLevelParameters() {
-        switch(this.gameState.level / 4)
+        if(this.gameState.level < 5)
         {
-            case 1:
-                this.gameState.targetPieces = 4;
-                this.gameState.maxCuts = 3;
-                break;
-            case 2:
-                this.gameState.targetPieces = 6;
-                this.gameState.maxCuts = 4;
-                break;
-            case 3:
-                this.gameState.targetPieces = 10;
-                this.gameState.maxCuts = 4;
-                break;
+            this.gameState.targetPieces = 4;
+            this.gameState.maxCuts = 3;
         }
-
+        else if(this.gameState.level < 9)
+        {
+            this.gameState.targetPieces = 6;
+            this.gameState.maxCuts = 4;
+        }
+        else
+        {
+            this.gameState.targetPieces = 10;
+            this.gameState.maxCuts = 4;
+        }
     }
 
     onCutMade(newShapeCount) {
@@ -108,8 +120,21 @@ class CutMode extends GameMode {
             }
         });
 
+
         if (window.uiManager.elements.level) {
-            window.uiManager.elements.level.textContent = `Уровень ${this.gameState.level / 4}`;
+            if(this.gameState.level < 5)
+            {
+                window.uiManager.elements.level.textContent = `Уровень 1`;
+            }
+            else if(this.gameState.level < 9)
+            {
+                window.uiManager.elements.level.textContent = `Уровень 2`;
+            }
+            else
+            {
+                window.uiManager.elements.level.textContent = `Уровень 3`;
+            }
+
         }
     }
 

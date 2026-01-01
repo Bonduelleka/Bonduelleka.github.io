@@ -31,7 +31,7 @@ class HardFlagMode extends FriendFoeMode {
     constructor() {
         super();
         this.name = 'Свой-чужой (Сложный)';
-        this.gameState.level = 2;
+        this.gameState.level = 6;
     }
 
     completeLevel() {

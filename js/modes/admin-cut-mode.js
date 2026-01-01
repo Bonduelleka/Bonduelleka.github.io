@@ -9,7 +9,7 @@ class EasyCutMode extends CutMode {
         this.gameState.score += 100;
 
         if (window.uiManager) {
-            window.uiManager.showMessage(`Уровень ${this.gameState.level} пройден!`);
+            window.uiManager.showMessage(`Этап ${this.gameState.level} пройден!`);
         }
 
         setTimeout(() => this.startLevel(), 1500);
@@ -20,14 +20,14 @@ class HardCutMode extends CutMode {
     constructor() {
         super();
         this.name = 'Разрежь на части (Сложный)';
-        this.gameState.level = 2;
+        this.gameState.level = 6;
     }
 
     completeLevel() {
         this.gameState.score += 100;
 
         if (window.uiManager) {
-            window.uiManager.showMessage(`Уровень ${this.gameState.level} пройден!`);
+            window.uiManager.showMessage(`Этап ${this.gameState.level} пройден!`);
         }
 
         setTimeout(() => this.startLevel(), 1500);
@@ -38,14 +38,14 @@ class ExtremeCutMode extends CutMode {
     constructor() {
         super();
         this.name = 'Разрежь на части (Экстремальный)';
-        this.gameState.level = 3;
+        this.gameState.level = 15;
     }
 
     completeLevel() {
         this.gameState.score += 100;
 
         if (window.uiManager) {
-            window.uiManager.showMessage(`Уровень ${this.gameState.level} пройден!`);
+            window.uiManager.showMessage(`Этап ${this.gameState.level} пройден!`);
         }
 
         setTimeout(() => this.startLevel(), 1500);
